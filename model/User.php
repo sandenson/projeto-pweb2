@@ -1,6 +1,5 @@
-<?php namespace User;
-  include '..\database';
-  use DbConnection as Conn;
+<?php
+  require_once 'database/database.php';
   
   class User {
     private $name;
@@ -69,7 +68,7 @@
     }
 
     public static function findAll() {
-      $conn = Conn\DbConnection::getConnection();
+      $conn = DbConnection::getConnection();
 
       try {
         $query = $conn->prepare("SELECT * FROM `users`");
@@ -91,7 +90,7 @@
     }
 
     public static function findByPk($username) {
-      $conn = Conn\DbConnection::getConnection();
+      $conn = DbConnection::getConnection();
 
       try {
         $query = $conn->prepare("SELECT * FROM `users` WHERE `username` = ?");
@@ -107,10 +106,10 @@
     }
 
     public function create() {
-      $conn = Conn\DbConnection::getConnection();
+      $conn = DbConnection::getConnection();
 
       try {
-        $query = $conn->prepare("INSERT INTO `users` (`name`, `birthday`, `email`, `username`, `address`, `cpf`, `password`) VALUES (?,?,?,?,?,?)");
+        $query = $conn->prepare("INSERT INTO `users` (`name`, `birthday`, `email`, `username`, `address`, `cpf`, `password`) VALUES (?,?,?,?,?,?,?)");
         $query->execute([
           $this->name,
           $this->birthday,
@@ -130,10 +129,11 @@
     }
     
     public static function delete($username) {
-      $conn = Conn\DbConnection::getConnection();
+      $conn = DbConnection::getConnection();
+      echo $username;
 
       try {
-        $query = $conn->prepare("DELETE FROM `users` WHERE `username` = :1");
+        $query = $conn->prepare("DELETE FROM `users` WHERE `username` = ?");
         $query->execute([$username]);
       } catch (\PDOException $e) {
         return null;

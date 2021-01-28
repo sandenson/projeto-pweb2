@@ -1,11 +1,11 @@
-<?php namespace DbConnection;
+<?php
   class DbConnection {
     public static function getConnection () {
       $servername = "localhost";
       $username = "root";
       $password = "root";
 
-      $conn = new \PDO("mysql:host=$servername;dbname=projeto_pweb_sbll", $username, $password);
+      $conn = new PDO("mysql:host=$servername;dbname=projeto_pweb_sbll", $username, $password);
 
       return $conn;
     }

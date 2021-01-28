@@ -1,12 +1,12 @@
-<?php namespace UserController;
-  include '..\model';
-  use User;
+<?php
+  require_once "model/User.php";
+  require_once "controller/SessionController.php";
 
   class UserController {
     public static function index () {
-      $users = User\User::findAll();
+      $users = User::findAll();
 
-      require_once '../view/usersList.php';
+      require_once 'view/usersList/index.php';
     }
 
     public static function store () {
@@ -18,18 +18,14 @@
       $cpf = $_POST["cpf"];
       $password = $_POST["password"];
 
-      $user = new User\User($name, $birthday, $email, $username, $address, $cpf, $password);
+      $user = new User($name, $birthday, $email, $username, $address, $cpf, $password);
       $result = $user->create();
 
       if ($result == null) {
         $_SESSION["sessionErrorMessage"] = "Erro de cadastro";
-        header("Location: ./");
       }
 
-      $loggedUser = $user->username;
-      
-      $_SESSION["loggedUser"] = serialize($loggedUser);
-      header("Location: ./");
+      SessionController::storeNew($user->getUsername(), $user->getName());
     }
 
     public function update () {
@@ -39,7 +35,7 @@
     public static function delete () {
       $loggedUser = $_SESSION["loggedUser"];
 
-      User\User::delete($loggedUser);
+      User::delete($loggedUser->username);
 
       $_SESSION["loggedUser"] = null;
       header("Location: ./");
@@ -52,4 +48,5 @@
     public function put_pet ($id) {
 
     }
+  }
 ?>

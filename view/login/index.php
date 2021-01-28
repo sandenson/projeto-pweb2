@@ -12,25 +12,20 @@
             font-family: 'Satisfy', cursive;
         }
     </style>
-  <title>Cadastro de usuário</title>
+  <title>Login</title>
 </head>
 <body>
   <div class="body_cad">
         <div class="conteudo_cad">
-          <h1 class="title_user" >Cadastro de usuário</h1>
+          <h1 class="title_user" >Login</h1>
           <div class="organizer_form">
-            <form action="?class=User&action=store" method="POST">
-              <input type="text" name="name" placeholder="Nome" required><br>
-              <input type="date" name="birthday" placeholder="Data de nascimento" required><br>
-              <input type="email" name="email" placeholder="Email" required><br>
+            <form action="?class=Session&action=store" method="POST">
               <input type="text" name="username" placeholder="Nome de usuário" required><br>
-              <input type="text" name="address" placeholder="Endereço" required><br>
-              <input type="text" name="cpf" placeholder="CPF" required><br>
               <input type="password" name="password" placeholder="Senha" required><br>
               <input type="submit" name="ok">
             </form>
-            <form action="?view=login" method="POST">
-              <p>Já tem uma conta? <button type="submit" name="ok">Faça login!</button></p><br>
+            <form action="?view=registerUser" method="POST">
+              <p>Não tem uma conta? <button type="submit" name="ok">Cadastre-se!</button></p><br>
             </form>
           </div>
         </div>
