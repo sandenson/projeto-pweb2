@@ -1,6 +1,6 @@
 <?php namespace DbConnection;
   class DbConnection {
-    static final function getConnection () {
+    public static function getConnection () {
       $servername = "localhost";
       $username = "root";
       $password = "root";

@@ -1,17 +1,23 @@
 <?php namespace User;
+  include '..\database';
+  use DbConnection as Conn;
+  
   class User {
     private $name;
     private $birthday;
     private $email;
     private $username;
     private $address;
+    private $cpf;
 
-    public function __construct($name, $birthday, $email, $username, $address){
+    public function __construct($name, $birthday, $email, $username, $address, $cpf, $password){
       $this->name = $name;
       $this->birthday = $birthday;
       $this->email = $email;
       $this->username = $username;
       $this->address = $address;
+      $this->cpf = $cpf;
+      $this->password = $password;
     }
 
     public function setName($name){
@@ -54,32 +60,84 @@
       return $this->address;
     }
 
+    public function setPassword($password){
+      $this->password = $password;
+    }
+
+    public function getPassword(){
+      return $this->password;
+    }
+
     public static function findAll() {
-  
+      $conn = Conn\DbConnection::getConnection();
+
+      try {
+        $query = $conn->prepare("SELECT * FROM `users`");
+        $query->execute();
+        $result = $query->fetchAll();
+
+        $users = array();
+
+        forEach($result as $resUser) {
+          $user = new User($resUser["name"], $resUser["birthday"], $resUser["email"], $resUser["username"], $resUser["address"], $resUser["cpf"], $resUser["password"]);
+
+          array_push($users, $user);
+        }
+
+        return isset($users) ? $users : null;
+      } catch (\PDOException $e) {
+        return null;
+      }
     }
 
-    public static function findById() {
-  
-    }
+    public static function findByPk($username) {
+      $conn = Conn\DbConnection::getConnection();
 
-    public static function findByUsername() {
-  
-    }
+      try {
+        $query = $conn->prepare("SELECT * FROM `users` WHERE `username` = ?");
+        $query->execute([$username]);
+        $result = $query->fetch();
 
-    public static function findByEmail() {
-  
+        $user = new User($result["name"], $result["birthday"], $result["email"], $result["username"], $result["address"], $result["cpf"], $result["password"]);
+
+        return isset($user) ? $user : null;
+      } catch (\PDOException $e) {
+        return null;
+      }
     }
 
     public function create() {
-  
+      $conn = Conn\DbConnection::getConnection();
+
+      try {
+        $query = $conn->prepare("INSERT INTO `users` (`name`, `birthday`, `email`, `username`, `address`, `cpf`, `password`) VALUES (?,?,?,?,?,?)");
+        $query->execute([
+          $this->name,
+          $this->birthday,
+          $this->email,
+          $this->username,
+          $this->address,
+          $this->cpf,
+          $this->password
+        ]);
+      } catch (\PDOException $e) {
+        return null;
+      }
     }
 
     public function update() {
-  
+      
     }
     
-    public function delete() {
-  
+    public static function delete($username) {
+      $conn = Conn\DbConnection::getConnection();
+
+      try {
+        $query = $conn->prepare("DELETE FROM `users` WHERE `username` = :1");
+        $query->execute([$username]);
+      } catch (\PDOException $e) {
+        return null;
+      }
     }
   }
 ?>
