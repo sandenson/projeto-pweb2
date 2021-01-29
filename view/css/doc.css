@@ -153,3 +153,12 @@ a:active {
     width: 22vmin;
     text-align: center;
 }
+
+.conteudo_fotos {
+    flex-direction: column;
+}
+
+.foto_pets {
+    display: flex;
+    flex-direction: row;
+}

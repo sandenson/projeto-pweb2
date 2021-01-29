@@ -89,6 +89,29 @@
       }
     }
 
+    public static function findAllOthers() {
+      $conn = DbConnection::getConnection();
+      $loggedUser = $_SESSION["loggedUser"];
+
+      try {
+        $query = $conn->prepare("SELECT * FROM `users` WHERE `username` != ?");
+        $query->execute([$loggedUser->username]);
+        $result = $query->fetchAll();
+
+        $users = array();
+
+        forEach($result as $resUser) {
+          $user = new User($resUser["name"], $resUser["birthday"], $resUser["email"], $resUser["username"], $resUser["address"], $resUser["cpf"], $resUser["password"]);
+
+          array_push($users, $user);
+        }
+
+        return isset($users) ? $users : null;
+      } catch (\PDOException $e) {
+        return null;
+      }
+    }
+
     public static function findByPk($username) {
       $conn = DbConnection::getConnection();
 

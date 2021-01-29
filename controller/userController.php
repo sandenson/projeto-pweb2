@@ -4,7 +4,7 @@
 
   class UserController {
     public static function index () {
-      $users = User::findAll();
+      $users = User::findAllOthers();
 
       require_once 'view/usersList/index.php';
     }

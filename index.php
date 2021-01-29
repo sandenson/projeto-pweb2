@@ -13,8 +13,6 @@
 
     require_once "controller/".$controller.".php";
 
-    // echo "<p>$controller $function</p>";
-
     $controller = new $controller();
     $controller->$function();
   }

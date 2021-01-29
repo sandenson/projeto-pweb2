@@ -28,7 +28,7 @@
 
   <div style = "display:flex;align-items:center;justify-content:center;margin-top: 10vh;">
     <div style = "margin-right: 10vw;">
-      <form action="?class=Session&action=delete" method="POST">
+      <form action="?class=User&action=index" method="POST">
         <button type="submit">
           Conheça outros usuários
         </button>
@@ -36,13 +36,13 @@
     </div>
 
     <div style = "margin-left: 10vw;">
-      <form action="?class=Session&action=delete" method="POST">
+      <form action="" method="POST">
         <button type="submit">
           Adote um animal
         </button>
       </form>
 
-      <form action="?class=Session&action=delete" method="POST">
+      <form action="" method="POST">
         <button type="submit">
           Ponha um animal para adoção
         </button>
