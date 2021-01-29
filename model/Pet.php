@@ -2,6 +2,7 @@
   require_once "database/database.php";
 
   class Pet {
+    private $id;
     private $name;
     private $description;
     private $type;
@@ -17,6 +18,14 @@
       $this->sex = $sex;
       $this->registeredBy = $registeredBy;
       $this->isAdopted = $isAdopted;
+    }
+
+    public function setId($id){
+      $this->id = $id;
+    }
+
+    public function getId(){
+      return $this->id;
     }
 
     public function setName($name){
@@ -88,7 +97,12 @@
           $pets = array();
 
           forEach($result as $resPet) {
-            $pet = new Pet($resPet["name"], $resPet["description"], $resPet["type"], $resPet["sex"], $resPet["registeredBy"], $resPet["isAdopted"], $resPet["adoptedBy"]);
+            $pet = new Pet($resPet["name"], $resPet["description"], $resPet["type"], $resPet["sex"], $resPet["registeredBy"], $resPet["isAdopted"]);
+            $pet->setId($resPet["id"]);
+
+            if ($resPet["isAdopted"]) {
+              $pet->setAdoptedBy($resPet["adoptedBy"]);
+            }
 
             array_push($pets, $pet);
           }
@@ -109,7 +123,9 @@
           $pets = array();
 
           forEach($result as $resPet) {
-            $pet = new Pet($resPet["name"], $resPet["description"], $resPet["type"], $resPet["sex"], $resPet["registeredBy"], $resPet["isAdopted"], $resPet["adoptedBy"]);
+            $pet = new Pet($resPet["name"], $resPet["description"], $resPet["type"], $resPet["sex"], $resPet["registeredBy"], $resPet["isAdopted"]);
+            $pet->setId($resPet["id"]);
+            $pet->setAdoptedBy($resPet["adoptedBy"]);
 
             array_push($pets, $pet);
           }
@@ -131,6 +147,7 @@
 
           forEach($result as $resPet) {
             $pet = new Pet($resPet["name"], $resPet["description"], $resPet["type"], $resPet["sex"], $resPet["registeredBy"], $resPet["isAdopted"], $resPet["adoptedBy"]);
+            $pet->setId($resPet["id"]);
 
             array_push($pets, $pet);
           }
@@ -154,7 +171,12 @@
         $pets = array();
 
         forEach($result as $resPet) {
-          $pet = new Pet($resPet["name"], $resPet["description"], $resPet["type"], $resPet["sex"], $resPet["registeredBy"], $resPet["isAdopted"], $resPet["adoptedBy"]);
+          $pet = new Pet($resPet["name"], $resPet["description"], $resPet["type"], $resPet["sex"], $resPet["registeredBy"], $resPet["isAdopted"]);
+          $pet->setId($resPet["id"]);
+
+          if ($resPet["isAdopted"]) {
+            $pet->setAdoptedBy($resPet["adoptedBy"]);
+          }
 
           array_push($pets, $pet);
         }
@@ -186,8 +208,15 @@
   
     }
     
-    public function delete() {
-  
+    public static function delete($petId) {
+      $conn = DbConnection::getConnection();
+
+      try {
+        $query = $conn->prepare("DELETE FROM `pets` WHERE `id` = ?");
+        $query->execute([$petId]);
+      } catch (PDOException $e) {
+        return null;
+      }
     }
   }
 ?>

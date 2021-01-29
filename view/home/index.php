@@ -9,7 +9,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home</title>
+  <title>Página inicial</title>
 </head>
 <body>
   <div style = "display:flex;align-items:center;justify-content:center;">
@@ -42,9 +42,9 @@
         </button>
       </form>
 
-      <form action="" method="POST">
+      <form action="?class=Pet&action=indexYours" method="POST">
         <button type="submit">
-          Gerencie seus animais
+          Gerencie seus pets registrados
         </button>
       </form>
     </div>

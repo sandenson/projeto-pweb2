@@ -15,7 +15,13 @@
 
       $pets = Pet::findByRegisterer($loggedUser->username);
 
-      require_once 'view/yourPetsList/index.php';
+      require_once 'view/yourRegisteredPetsList/index.php';
+    }
+
+    public static function indexNotAdopted () {
+      $pets = Pet::findAll("Esperando por adoção");
+
+      require_once 'view/adopt/index.php';
     }
 
     public static function store () {
@@ -38,12 +44,11 @@
     }
 
     public static function delete () {
-      $loggedUser = $_SESSION["loggedUser"];
+      $petId = $_POST["petId"];
 
-      User::delete($loggedUser->username);
+      Pet::delete($petId);
 
-      $_SESSION["loggedUser"] = null;
-      header("Location: ./");
+      header("Location: ./?class=Pet&action=indexYours");
     }
 
     public function adopt ($id) {

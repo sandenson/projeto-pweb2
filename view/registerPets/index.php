@@ -12,7 +12,7 @@
             font-family: 'Satisfy', cursive;
         }
     </style>
-  <title>Home</title>
+  <title>Cadastro de pets</title>
 </head>
 <body>
   <form action="./" method="POST">
@@ -22,7 +22,7 @@
   </form>
   <div class="body_cad">
     <div class="conteudo_cad">
-      <h1 class="title_cad" >Cadastro de Animais</h1>
+      <h1 class="title_cad" >Cadastro de pets</h1>
       <div class="organizer_form">
         <form class="form" action="?class=Pet&action=store" method="POST" enctype="multipart/form-data">
           <label>Nome:</label> <input  type="text" name="name" placeholder="Nome"><br>
