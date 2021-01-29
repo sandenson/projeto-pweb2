@@ -15,16 +15,20 @@
   <title>Home</title>
 </head>
 <body>
-  <a class="button" href="index.php"  >Voltar</a>
+  <form action="./" method="POST">
+    <button type="submit">
+      Voltar
+    </button>
+  </form>
   <div class="body_cad">
     <div class="conteudo_cad">
       <h1 class="title_cad" >Cadastro de Animais</h1>
       <div class="organizer_form">
-        <form class="form" action="../../controllers/createPet.php" method="POST" enctype="multipart/form-data">
+        <form class="form" action="?class=Pet&action=store" method="POST" enctype="multipart/form-data">
           <label>Nome:</label> <input  type="text" name="name" placeholder="Nome"><br>
           <label>Descrição:</label> <input type="text" name="description" placeholder="Descrição"><br>
-          <label> Espécie:</label> 
-          <select class="button_cad" name="type">
+          <label>Espécie:</label> 
+          <select class="button_cad" name="type" required>
             <option>Cachorro</option>
             <option>Gato</option>
             <option>Toupeira</option>
@@ -32,6 +36,11 @@
             <option>Jacaré</option>
             <option>Passarinho</option>
             <option>Sapo</option>
+          </select><br>
+          <label>Sexo:</label> 
+          <select class="button_cad" name="sex" required>
+            <option>Fêmea</option>
+            <option>Macho</option>
           </select><br>
           <label>Adicione imagens:</label><br>
           <div id="image-handler" class="images">

@@ -13,6 +13,11 @@
   </head>
   <body>
     <div style = "display:flex;align-items:center;justify-content:center;">
+      <form style = "margin-right:10vw" action="./" method="POST">
+        <button type="submit">
+          Voltar
+        </button>
+      </form>
       <h1>Conheça outros usuários</h1>
       <form style = "margin-left:30vw" action="?class=Session&action=delete" method="POST">
         <button type="submit">

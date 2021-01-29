@@ -35,16 +35,24 @@
       </form>
     </div>
 
-    <div style = "margin-left: 10vw;">
-      <form action="" method="POST">
+    <div>
+      <form action="?view=registerPets" method="POST">
         <button type="submit">
-          Adote um animal
+          Registre um animal para adoção
         </button>
       </form>
 
       <form action="" method="POST">
         <button type="submit">
-          Ponha um animal para adoção
+          Gerencie seus animais
+        </button>
+      </form>
+    </div>
+
+    <div style = "margin-left: 10vw;">
+      <form action="" method="POST">
+        <button type="submit">
+          Adote um animal
         </button>
       </form>
     </div>
