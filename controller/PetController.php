@@ -10,12 +10,20 @@
       require_once 'view/petsList/index.php';
     }
 
-    public static function indexYours () {
+    public static function indexYourRegistrations () {
       $loggedUser = $_SESSION["loggedUser"];
 
       $pets = Pet::findByRegisterer($loggedUser->username);
 
       require_once 'view/yourRegisteredPetsList/index.php';
+    }
+
+    public static function indexYourAdoptions () {
+      $loggedUser = $_SESSION["loggedUser"];
+
+      $pets = Pet::findByAdopter($loggedUser->username);
+
+      require_once 'view/yourAdoptedPetsList/index.php';
     }
 
     public static function indexNotAdopted () {

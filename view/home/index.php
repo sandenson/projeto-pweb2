@@ -35,14 +35,22 @@
       </form>
     </div>
 
+    <div style = "margin-right: 10vw;">
+      <form action="?class=Pet&action=indexYourAdoptions" method="POST">
+        <button type="submit">
+          Veja os pets que você adotou
+        </button>
+      </form>
+    </div>
+
     <div>
       <form action="?view=registerPets" method="POST">
         <button type="submit">
-          Registre um animal para adoção
+          Registre um pet para adoção
         </button>
       </form>
 
-      <form action="?class=Pet&action=indexYours" method="POST">
+      <form action="?class=Pet&action=indexYourRegistrations" method="POST">
         <button type="submit">
           Gerencie seus pets registrados
         </button>
@@ -50,9 +58,15 @@
     </div>
 
     <div style = "margin-left: 10vw;">
-      <form action="" method="POST">
+      <form action="?class=Pet&action=index" method="POST">
         <button type="submit">
-          Adote um animal
+          Veja todos os pets cadastrados
+        </button>
+      </form>
+
+      <form action="?class=Pet&action=indexNotAdopted" method="POST">
+        <button type="submit">
+          Adote um pet
         </button>
       </form>
     </div>

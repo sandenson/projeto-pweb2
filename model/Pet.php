@@ -86,6 +86,7 @@
 
     public static function findAll($filter) {
       $conn = DbConnection::getConnection();
+      $loggedUser = $_SESSION["loggedUser"];
 
       if ($filter == "Todos") {
         try {
@@ -177,6 +178,31 @@
           if ($resPet["isAdopted"]) {
             $pet->setAdoptedBy($resPet["adoptedBy"]);
           }
+
+          array_push($pets, $pet);
+        }
+
+        return isset($pets) ? $pets : null;
+      } catch (\PDOException $e) {
+        return null;
+      }
+    }
+
+    public static function findByAdopter($username) {
+      $conn = DbConnection::getConnection();
+
+      try {
+        $query = $conn->prepare("SELECT * FROM `pets` WHERE `adoptedBy` = ?");
+        $query->execute([$username]);
+
+        $result = $query->fetchAll();
+
+        $pets = array();
+
+        forEach($result as $resPet) {
+          $pet = new Pet($resPet["name"], $resPet["description"], $resPet["type"], $resPet["sex"], $resPet["registeredBy"], $resPet["isAdopted"]);
+          $pet->setId($resPet["id"]);
+          $pet->setAdoptedBy($resPet["adoptedBy"]);
 
           array_push($pets, $pet);
         }
