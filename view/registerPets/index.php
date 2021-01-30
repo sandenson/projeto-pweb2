@@ -1,10 +1,16 @@
 <!-- - Cadastro de usuários (nome, data de nascimento, email, nome de usuário, foto, endereço) do sistema com validação dos dados;
 - Cadastro de pets (fotos, nome, descrição, tipo, com validação dos dados; -->
 
+<?php
+  if(!isset($_SESSION["loggedUser"])) {
+    header('Location: ../../');
+  }
+?>
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
-    <link rel="stylesheet" type="text/css" href="../css/doc.css">
+    <link rel="stylesheet" type="text/css" href="view/css/doc.css">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2? família=Satisfazer&display=swap" rel="stylesheet">
     <style>

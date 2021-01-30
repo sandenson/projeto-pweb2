@@ -72,18 +72,16 @@ label {
     padding: 5px;
     display: flex;
     justify-content: center;
-    margin-top: 23.4vmin;
-    margin-left: 57vmin;
-    margin-right: 60vmin;
+    width: 100vw;
+    height: 100vh;
 }
 
 .body_cad {
     padding: 5px;
     display: flex;
     justify-content: center;
-    margin-top: 10vmin;
-    margin-left: 57vmin;
-    margin-right: 60vmin;
+    width: 100vw;
+    height: 100vh;
 }
 
 a {

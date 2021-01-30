@@ -11,7 +11,17 @@
 
     public function __construct($name, $birthday, $email, $username, $address, $cpf, $password){
       $this->name = $name;
-      $this->birthday = $birthday;
+      $nBirthday[0] = $birthday[8];
+      $nBirthday[1] = $birthday[9];
+      $nBirthday[2] = $birthday[4];
+      $nBirthday[3] = $birthday[5];
+      $nBirthday[4] = $birthday[6];
+      $nBirthday[5] = $birthday[7];
+      $nBirthday[6] = $birthday[0];
+      $nBirthday[7] = $birthday[1];
+      $nBirthday[8] = $birthday[2];
+      $nBirthday[9] = $birthday[3];
+      $this->birthday = implode("", str_replace("-", "/", $nBirthday));
       $this->email = $email;
       $this->username = $username;
       $this->address = $address;
@@ -65,6 +75,14 @@
 
     public function getPassword(){
       return $this->password;
+    }
+
+    public function setCpf($cpf){
+      $this->cpf = $cpf;
+    }
+
+    public function getCpf(){
+      return $this->cpf;
     }
 
     public static function findAll() {

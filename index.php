@@ -2,7 +2,7 @@
   session_start();
 
   if (isset($_GET["view"])) {
-    require_once "view/".$_GET["view"]."/index.php";
+    require "view/".$_GET["view"]."/index.php";
   }
 
   else if (isset($_GET["class"]) && isset($_GET["action"])) {
@@ -16,10 +16,10 @@
   }
 
   else if (isset($_SESSION["loggedUser"])) {
-    require_once "view/home/index.php";
+    require "view/home/index.php";
   }
 
   else {
-    require_once "view/login/index.php";
+    require "view/login/index.php";
   }
 ?>

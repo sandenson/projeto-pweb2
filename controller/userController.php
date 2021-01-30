@@ -9,6 +9,14 @@
       require_once 'view/usersList/index.php';
     }
 
+    public static function profile () {
+      $loggedUser = $_SESSION["loggedUser"];
+
+      $user = User::findByPk($loggedUser->username);
+
+      require_once "view/profile/index.php";
+    }
+
     public static function store () {
       $name = $_POST["name"];
       $birthday = $_POST["birthday"];

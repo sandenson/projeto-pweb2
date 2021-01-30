@@ -4,8 +4,7 @@
   }
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,7 +18,12 @@
         echo $user->name;
       ?>
     </h1>
-    <form style = "margin-left:30vw" action="?class=Session&action=delete" method="POST">
+    <form style = "margin-left:30vw" action="?class=User&action=profile" method="POST">
+      <button type="submit">
+        Perfil
+      </button>
+    </form>
+    <form style = "margin-left:3vw" action="?class=Session&action=delete" method="POST">
       <button type="submit">
         Sair
       </button>

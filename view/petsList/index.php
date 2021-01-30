@@ -1,5 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
+  if(!isset($_SESSION["loggedUser"])) {
+    header('Location: ../../');
+  }
+?>
+
+<html lang="pt-BR">
 
 <head>
   <meta charset="UTF-8">
