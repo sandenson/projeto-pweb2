@@ -244,5 +244,20 @@
         return null;
       }
     }
+
+    public static function adopt($petId) {
+      $conn = DbConnection::getConnection();
+      $loggedUser = $_SESSION["loggedUser"];
+
+      try {
+        $query = $conn->prepare("UPDATE `pets` SET `adoptedBy` = ?, `isAdopted` = TRUE WHERE `id` = ?");
+        $query->execute([
+          $loggedUser->username,
+          $petId
+        ]);
+      } catch (PDOException $e) {
+        return null;
+      }
+    }
   }
 ?>

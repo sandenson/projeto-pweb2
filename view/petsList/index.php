@@ -66,7 +66,7 @@
       echo "<p>Não há nenhum pet registrado no momento.</p>";
     }
 
-    if ($_POST["filter"] == "Esperando por adoção") {
+    else if ($_POST["filter"] == "Esperando por adoção") {
       echo "<p>Não há nenhum pet registrado esperando por adoção no momento.</p>";
     }
 

@@ -30,6 +30,7 @@
         <th>Nome</th>
         <th>Espécie</th>
         <th>Sexo</th>
+        <th>Registrado por</th>
       </tr>
       <?php
       foreach ($pets as $index => $pet) :
@@ -38,6 +39,7 @@
           <td><?php echo $pet->getName(); ?></td>
           <td><?php echo $pet->getType(); ?></td>
           <td><?php echo $pet->getSex(); ?></td>
+          <td><?php echo "@".$pet->getRegisteredBy(); ?></td>
         </tr>
       <?php
       endforeach;

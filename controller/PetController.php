@@ -7,7 +7,7 @@
 
       $pets = Pet::findAll($filter);
 
-      require_once 'view/petsList/index.php';
+      require_once "view/petsList/index.php";
     }
 
     public static function indexYourRegistrations () {
@@ -15,7 +15,7 @@
 
       $pets = Pet::findByRegisterer($loggedUser->username);
 
-      require_once 'view/yourRegisteredPetsList/index.php';
+      require_once "view/yourRegisteredPetsList/index.php";
     }
 
     public static function indexYourAdoptions () {
@@ -23,13 +23,13 @@
 
       $pets = Pet::findByAdopter($loggedUser->username);
 
-      require_once 'view/yourAdoptedPetsList/index.php';
+      require_once "view/yourAdoptedPetsList/index.php";
     }
 
     public static function indexNotAdopted () {
       $pets = Pet::findAll("Esperando por adoção");
 
-      require_once 'view/adopt/index.php';
+      require_once "view/adopt/index.php";
     }
 
     public static function store () {
@@ -56,15 +56,15 @@
 
       Pet::delete($petId);
 
-      header("Location: ./?class=Pet&action=indexYours");
+      header("Location: ?class=Pet&action=indexYourRegistrations");
     }
 
-    public function adopt ($id) {
-      
-    }
+    public function adopt () {
+      $petId = $_POST["petId"];
 
-    public function put_pet ($id) {
+      Pet::adopt($petId);
 
+      header("Location: ".$_POST["action"]);
     }
   }
 ?>

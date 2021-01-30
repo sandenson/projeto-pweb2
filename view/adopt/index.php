@@ -42,9 +42,10 @@
           <td><?php echo $pet->getSex(); ?></td>
           <td><?php echo "@".$pet->getRegisteredBy() ?></td>
           <td>
-            <form action="?class=Pet&action=delete" method="POST">
+            <form action="?class=Pet&action=adopt" method="POST">
               <input type="hidden" name="petId" value=<?php echo $pet->getId(); ?>>
-              <button type="submit">Deletar registro do pet</button>
+              <input type="hidden" name="action" value="?class=Pet&action=indexNotAdopted">
+              <button type="submit">Adotar</button>
             </form>
           </td>
         </tr>
