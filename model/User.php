@@ -159,8 +159,6 @@
     public function update() {
       $conn = DbConnection::getConnection();
 
-      echo $this->username;
-      
       try {
         $query = $conn->prepare("UPDATE `users` SET `password` = ?, `email` = ?, `address` = ?, `cpf`= ?, `birthday`= ? WHERE `username` = ?");
         $query->execute([

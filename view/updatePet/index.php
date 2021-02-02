@@ -9,12 +9,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Atualização do usuário</title>
+  <title>Atualização do pet</title>
 </head>
 
 <body>
   <div style="display:flex;align-items:center;justify-content:center;">
-    <form action="?class=User&action=profile" method="POST">
+    <form action="?class=Pet&action=indexYourRegistrations" method="POST">
       <button type="submit">
         Voltar
       </button>
@@ -28,20 +28,13 @@
   </div>
 
   <h1>Atualização de dados - <?php
-    $loggedUser = $_SESSION["loggedUser"];
-    echo $loggedUser->name;
+    echo $_POST["petName"];
   ?></h1>
-  <p><?php
-    echo "@".$loggedUser->username
-  ?></p>
 
-  <form action="?class=User&action=update" method="POST">
-    <label>Email:</label><input type="email" name="nEmail" placeholder="Novo email"><br>
-    <label>CPF:</label><input type="text" name="nCpf" placeholder="Novo CPF"><br>
-    <label>Endereço:</label><input type="text" name="nAddress" placeholder="Novo endereço"><br>
-    <label>Data de nascimento:<input type="date" name="nBirthday"><br>
-    <label>Nova senha:</label><input type="password" name="nPassword" placeholder="Nova senha"><br>
-    <label>Confirmar senha:</label><input type="password" name="confirmNPassword" placeholder="Confirmar senha"><br>
+  <form action="?class=Pet&action=update" method="POST">
+    <label>Nome:</label><input type="text" name="nName" placeholder="Novo nome"><br>
+    <label>Descrição:</label><input type="text" name="nDesc" placeholder="Nova descrição"><br>
+    <input type="hidden" name="petId" value="<?php echo $_POST["petId"]; ?>" />
     <button type="submit">
       Atualizar dados
     </button>

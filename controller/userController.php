@@ -37,25 +37,21 @@
     }
 
     public function update () {
-      if (!isset($_POST["nAddress"]) && !isset($_POST["nCpf"]) && !isset($_POST["nEmail"]) && !isset($_POST["nBirthday"]) && !isset($_POST["nPassword"]) && !isset($_POST["confirmNPassword"])) {
+      if ($_POST["nAddress"] == "" && $_POST["nCpf"] == "" && $_POST["nEmail"] == "" && $_POST["nBirthday"] == "" && $_POST["nPassword"] == "" && $_POST["confirmNPassword"] == "") {
         header("Location: ?class=User&action=profile");
       }
 
-      $conn = DbConnection::getConnection();
-      $query = $conn->prepare("SELECT * FROM `users` WHERE `username` = ?");
-
       $loggedUser = $_SESSION["loggedUser"];
 
-      $query->execute([$loggedUser->username]);
-      $result = $query->fetch();
+      $result = User::findByPk($loggedUser->username);
 
-      $address = $_POST["nAddress"] != "" ? $_POST["nAddress"] : $result["address"];
-      $cpf = $_POST["nCpf"] != "" ? $_POST["nCpf"] : $result["cpf"];
-      $email = $_POST["nEmail"] != "" ? $_POST["nEmail"] : $result["email"];
-      $birthday = $_POST["nBirthday"] != "" ? $_POST["nBirthday"] : $result["birthday"];
-      $password = ($_POST["nPassword"] != "" && $_POST["confirmNPassword"] != "" && $_POST["nPassword"] == $_POST["confirmNPassword"]) ? $_POST["nPassword"] : $result["password"];
+      $address = $_POST["nAddress"] != "" ? $_POST["nAddress"] : $result->getAddress();
+      $cpf = $_POST["nCpf"] != "" ? $_POST["nCpf"] : $result->getCpf();
+      $email = $_POST["nEmail"] != "" ? $_POST["nEmail"] : $result->getEmail();
+      $birthday = $_POST["nBirthday"] != "" ? $_POST["nBirthday"] : $result->getBirthday();
+      $password = ($_POST["nPassword"] != "" && $_POST["confirmNPassword"] != "" && $_POST["nPassword"] == $_POST["confirmNPassword"]) ? $_POST["nPassword"] : $result->getPassword();
 
-      $user = new User($result["name"], $birthday, $email, $result["username"], $address, $cpf, $password);
+      $user = new User($result->getName(), $birthday, $email, $result->getUsername(), $address, $cpf, $password);
       $user->update();
 
       header("Location: ?class=User&action=profile");

@@ -48,7 +48,21 @@
     }
 
     public function update () {
+      if ($_POST["nName"] == "" && $_POST["nDesc"] == "") {
+        header("Location: ?class=Pet&action=indexYourRegistrations");
+      }
 
+      $result = Pet::findByPk($_POST["petId"]);
+
+      $name = $_POST["nName"] != "" ? $_POST["nName"] : $result->getName();
+      $desc = $_POST["nDesc"] != "" ? $_POST["nDesc"] : $result->getDescription();
+
+      echo $name." ".$desc;
+
+      $pet = new Pet($name, $desc, $result->getType(), $result->getSex(), $result->getRegisteredBy(), $result->getIsAdopted());
+      $pet->update($_POST["petId"]);
+
+      header("Location: ?class=Pet&action=indexYourRegistrations");
     }
 
     public static function delete () {

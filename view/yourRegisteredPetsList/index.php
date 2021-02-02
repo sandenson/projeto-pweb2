@@ -28,6 +28,8 @@
   </div>
 
   <?php
+  $loggedUser = $_SESSION["loggedUser"];
+
   if ($pets) {
   ?>
     <table>
@@ -35,7 +37,9 @@
         <th>Nome</th>
         <th>Espécie</th>
         <th>Sexo</th>
+        <th>Descrição</th>
         <th>Status</th>
+        <th>Adotado por</th>
         <th></th>
         <th></th>
       </tr>
@@ -46,10 +50,17 @@
           <td><?php echo $pet->getName(); ?></td>
           <td><?php echo $pet->getType(); ?></td>
           <td><?php echo $pet->getSex(); ?></td>
+          <td><?php echo $pet->getDescription(); ?></td>
           <td><?php echo $pet->getIsAdopted() ? "Adotado" : "Esperando por adoção"; ?></td>
+          <td>
+            <?php
+              echo $pet->getAdoptedBy() ? ($pet->getAdoptedBy() == $loggedUser->username ? "@".$loggedUser->username." (Você)" : $pet->getAdoptedBy()) : "";
+            ?>
+          </td>
           <td>
             <form action="?view=updatePet" method="POST">
               <input type="hidden" name="petId" value=<?php echo $pet->getId(); ?>>
+              <input type="hidden" name="petName" value=<?php echo $pet->getName(); ?>>
               <button type="submit">Atualizar informações</button>
             </form>
           </td>

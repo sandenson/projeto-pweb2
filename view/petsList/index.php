@@ -39,6 +39,8 @@
   <p>Categoria: <b><?php echo isset($_POST["filter"]) ? $_POST["filter"] : "Todos" ?></b></p>
 
   <?php
+  $loggedUser = $_SESSION["loggedUser"];
+
   if ($pets) {
   ?>
     <table>
@@ -47,8 +49,8 @@
         <th>Espécie</th>
         <th>Sexo</th>
         <th>Status</th>
-        <th>Registrado por</th>
         <th>Adotado por</th>
+        <th>Registrado por</th>
       </tr>
       <?php
       foreach ($pets as $index => $pet) :
@@ -58,8 +60,16 @@
           <td><?php echo $pet->getType(); ?></td>
           <td><?php echo $pet->getSex(); ?></td>
           <td><?php echo $pet->getIsAdopted() ? "Adotado" : "Esperando por adoção"; ?></td>
-          <td><?php echo "@".$pet->getRegisteredBy() ?></td>
-          <td><?php echo $pet->getAdoptedBy() ? "@".$pet->getAdoptedBy() : "" ?></td>
+          <td>
+            <?php
+              echo $pet->getAdoptedBy() ? ($pet->getAdoptedBy() == $loggedUser->username ? "@".$loggedUser->username." (Você)" : "@".$pet->getAdoptedBy()) : "";
+            ?>
+          </td>
+          <td>
+            <?php
+              echo $pet->getRegisteredBy() ? ($pet->getRegisteredBy() == $loggedUser->username ? "@".$loggedUser->username." (Você)" : "@".$pet->getRegisteredBy()) : "";
+              ?>
+          </td>
         </tr>
       <?php
       endforeach;

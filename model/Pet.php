@@ -160,6 +160,22 @@
       }
     }
 
+    public static function findByPk($id) {
+      $conn = DbConnection::getConnection();
+
+      try {
+        $query = $conn->prepare("SELECT * FROM `pets` WHERE `id` = ?");
+        $query->execute([$id]);
+        $result = $query->fetch();
+
+        $pet = new Pet($result["name"], $result["description"], $result["type"], $result["sex"], $result["registeredBy"], $result["isAdopted"]);
+
+        return isset($pet) ? $pet : null;
+      } catch (\PDOException $e) {
+        return null;
+      }
+    }
+
     public static function findByRegisterer($username) {
       $conn = DbConnection::getConnection();
 
@@ -230,8 +246,19 @@
       }
     }
 
-    public function update() {
-  
+    public function update($id) {
+      $conn = DbConnection::getConnection();
+
+      try {
+        $query = $conn->prepare("UPDATE `pets` SET `name` = ?, `description` = ? WHERE `id` = ?");
+        $query->execute([
+          $this->name,
+          $this->description,
+          $id
+        ]);
+      } catch (\PDOException $e) {
+        return null;
+      }
     }
     
     public static function delete($petId) {
