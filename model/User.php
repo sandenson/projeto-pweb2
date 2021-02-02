@@ -8,20 +8,11 @@
     private $username;
     private $address;
     private $cpf;
+    private $password;
 
     public function __construct($name, $birthday, $email, $username, $address, $cpf, $password){
       $this->name = $name;
-      $nBirthday[0] = $birthday[8];
-      $nBirthday[1] = $birthday[9];
-      $nBirthday[2] = $birthday[4];
-      $nBirthday[3] = $birthday[5];
-      $nBirthday[4] = $birthday[6];
-      $nBirthday[5] = $birthday[7];
-      $nBirthday[6] = $birthday[0];
-      $nBirthday[7] = $birthday[1];
-      $nBirthday[8] = $birthday[2];
-      $nBirthday[9] = $birthday[3];
-      $this->birthday = implode("", str_replace("-", "/", $nBirthday));
+      $this->birthday = $birthday;
       $this->email = $email;
       $this->username = $username;
       $this->address = $address;
@@ -166,7 +157,23 @@
     }
 
     public function update() {
+      $conn = DbConnection::getConnection();
+
+      echo $this->username;
       
+      try {
+        $query = $conn->prepare("UPDATE `users` SET `password` = ?, `email` = ?, `address` = ?, `cpf`= ?, `birthday`= ? WHERE `username` = ?");
+        $query->execute([
+          $this->password,
+          $this->email,
+          $this->address,
+          $this->cpf,
+          $this->birthday,
+          $this->username
+        ]);
+      } catch (\PDOException $e) {
+        return null;
+      }
     }
     
     public static function delete($username) {

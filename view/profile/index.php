@@ -39,10 +39,15 @@
     <li style="list-style: none">Email: <?php echo $user->getEmail() ?></li>
     <li style="list-style: none">CPF: <?php echo $user->getCpf() ?></li>
     <li style="list-style: none">Endereço: <?php echo $user->getAddress() ?></li>
-    <li style="list-style: none">Data de nascimento: <?php echo $user->getBirthday() ?></li>
+    <li style="list-style: none">Data de nascimento: 
+    <?php
+      $birthday = $user->getBirthday();
+      $nBirthday = $birthday[8].$birthday[9].$birthday[4].$birthday[5].$birthday[6].$birthday[7].$birthday[0].$birthday[1].$birthday[2].$birthday[3];
+      echo str_replace("-", "/", $nBirthday);
+    ?></li>
   </ul>
 
-  <form action="" method="POST">
+  <form action="?view=updateUser" method="POST">
     <button type="submit">
       Atualizar dados
     </button>

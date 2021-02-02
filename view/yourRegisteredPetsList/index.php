@@ -48,7 +48,7 @@
           <td><?php echo $pet->getSex(); ?></td>
           <td><?php echo $pet->getIsAdopted() ? "Adotado" : "Esperando por adoção"; ?></td>
           <td>
-            <form action="" method="POST">
+            <form action="?view=updatePet" method="POST">
               <input type="hidden" name="petId" value=<?php echo $pet->getId(); ?>>
               <button type="submit">Atualizar informações</button>
             </form>
