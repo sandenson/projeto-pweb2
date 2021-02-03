@@ -15,8 +15,9 @@
       $loggedUser = $_SESSION["loggedUser"];
 
       $pets = Pet::findByRegisterer($loggedUser->username);
+      var_dump($pets);
 
-      require_once "view/yourRegisteredPetsList/index.php";
+      // require_once "view/yourRegisteredPetsList/index.php";
     }
 
     public static function indexYourAdoptions () {
@@ -45,7 +46,7 @@
       $pet = new Pet($name, $description, $type, $sex, $registedBy, false);
       $petId = $pet->create();
 
-      if (isset($_FILES["picture"])) {
+      if ($_FILES["picture"]["name"] != "") {
         $imgName = date("mdYHis").".".pathinfo($_FILES["picture"]["name"])["extension"];
 
         $petImg = new PetImg($petId, $imgName);
@@ -53,8 +54,6 @@
         
         move_uploaded_file($_FILES["picture"]["tmp_name"], "uploads/img/".$imgName);
       }
-
-      echo $petId;
 
       header("Location: ./");
     }

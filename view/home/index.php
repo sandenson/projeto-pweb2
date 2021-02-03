@@ -1,37 +1,43 @@
 <?php
-  if(!isset($_SESSION["loggedUser"])) {
-    header("Location: ./");
-  }
+if (!isset($_SESSION["loggedUser"])) {
+  header("Location: ./");
+}
 ?>
 
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="view/css/doc.css">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Redressed&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
   <title>Página inicial</title>
 </head>
-<body>
-  <div style = "display:flex;align-items:center;justify-content:center;">
-    <h1>Esta é a home page,
-      <?php
-        $user = $_SESSION["loggedUser"];
-        echo $user->name;
-      ?>
+
+<body id="home">
+  <div id="header">
+    <h1>
+      Hi, <?php $user = $_SESSION["loggedUser"];
+          echo $user->username; ?>!
     </h1>
-    <form style = "margin-left:30vw" action="?class=User&action=profile" method="POST">
-      <button type="submit">
-        Perfil
-      </button>
-    </form>
-    <form style = "margin-left:3vw" action="?class=Session&action=delete" method="POST">
-      <button type="submit">
-        Sair
-      </button>
-    </form>
+    <div class="header">
+      <form action="?class=User&action=profile" method="POST">
+        <button type="submit">
+          Perfil
+        </button>
+      </form>
+      <form action="?class=Session&action=delete" method="POST">
+        <button type="submit">
+          Sair
+        </button>
+      </form>
+    </div>
   </div>
 
-  <div style = "display:flex;align-items:center;justify-content:center;margin-top: 10vh;">
-    <div style = "margin-right: 10vw;">
+  <div>
+    <div>
       <form action="?class=User&action=index" method="POST">
         <button type="submit">
           Conheça outros usuários
@@ -39,7 +45,7 @@
       </form>
     </div>
 
-    <div style = "margin-right: 10vw;">
+    <div>
       <form action="?class=Pet&action=indexYourAdoptions" method="POST">
         <button type="submit">
           Veja os pets que você adotou
@@ -61,7 +67,7 @@
       </form>
     </div>
 
-    <div style = "margin-left: 10vw;">
+    <div>
       <form action="?class=Pet&action=index" method="POST">
         <button type="submit">
           Veja todos os pets cadastrados
@@ -76,4 +82,5 @@
     </div>
   </div>
 </body>
+
 </html>
