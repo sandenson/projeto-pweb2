@@ -31,9 +31,13 @@
     echo $_POST["petName"];
   ?></h1>
 
-  <form action="?class=Pet&action=update" method="POST">
-    <label>Nome:</label><input type="text" name="nName" placeholder="Novo nome"><br>
-    <label>Descrição:</label><input type="text" name="nDesc" placeholder="Nova descrição"><br>
+  <form action="?class=Pet&action=update" method="POST" enctype="multipart/form-data">
+    <label>Nome: </label><input type="text" name="nName" placeholder="Novo nome"><br>
+    <label>Descrição: </label><input type="text" name="nDesc" placeholder="Nova descrição"><br>
+    <label>Foto: </label><br>
+    <div id="image-handler" class="images">
+      <input type="file" name="nPicture" accept="image/*"/><br>
+    </div>
     <input type="hidden" name="petId" value="<?php echo $_POST["petId"]; ?>" />
     <button type="submit">
       Atualizar dados

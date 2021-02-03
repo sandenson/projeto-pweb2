@@ -54,13 +54,33 @@
       }
     }
 
-    public function update($petId) {
+    public function update() {
       $conn = DbConnection::getConnection();
 
       try {
-        $query = $conn->prepare("UPDATE `pets_imgs` SET `name` = ? WHERE `petId` = ?");
+        $query = $conn->prepare("SELECT `name` FROM `pets_imgs` WHERE `petId` = ?");
+        $query->execute([$this->petId]);
+        $oldImgName = $query->fetch();
+      } catch (\PDOException $e) {
+        return null;
+      }
+
+      try {
+        if ($oldImgName){
+          $query = $conn->prepare("UPDATE `pets_imgs` SET `name` = ? WHERE `petId` = ?");
+          $query->execute([
+            $this->name,
+            $this->petId
+          ]);
+
+          if ($oldImgName) {
+            unlink("uploads/img/".$oldImgName["name"]);
+          }
+        }
+
+        $query = $conn->prepare("INSERT INTO `pets_imgs` (`petId`, `name`) VALUES (?,?)");
         $query->execute([
-          $petId,
+          $this->petId,
           $this->name
         ]);
       } catch (\PDOException $e) {
@@ -70,6 +90,16 @@
     
     public static function delete($petId) {
       $conn = DbConnection::getConnection();
+
+      try {
+        $query = $conn->prepare("SELECT `name` FROM `pets_imgs` WHERE `petId` = ?");
+        $query->execute([$petId]);
+        $oldImgName = $query->fetch();
+
+        unlink("uploads/img/".$oldImgName["name"]);
+      } catch (\PDOException $e) {
+        return null;
+      }
 
       try {
         $query = $conn->prepare("DELETE FROM `pets_imgs` WHERE `petId` = ?");

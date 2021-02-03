@@ -18,10 +18,10 @@ if (!isset($_SESSION["loggedUser"])) {
 
 <body id="home">
   <div id="header">
-    <h1>
-      Hi, <?php $user = $_SESSION["loggedUser"];
-          echo $user->username; ?>!
-    </h1>
+    <h1><?php
+      $user = $_SESSION["loggedUser"];
+      echo "Olá, ".$user->username."!";
+    ?></h1>
     <div class="header">
       <form action="?class=User&action=profile" method="POST">
         <button type="submit">

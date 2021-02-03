@@ -32,6 +32,7 @@
   ?>
     <table>
       <tr>
+        <th></th>
         <th>Nome</th>
         <th>Espécie</th>
         <th>Sexo</th>
@@ -41,10 +42,15 @@
       foreach ($pets as $index => $pet) :
       ?>
         <tr>
+          <td><?php echo $pet->image ? "<img src='uploads/img/".$pet->image."'alt='foto_do_pet'>" : ""; ?></td>
           <td><?php echo $pet->getName(); ?></td>
           <td><?php echo $pet->getType(); ?></td>
           <td><?php echo $pet->getSex(); ?></td>
-          <td><?php echo "@".$pet->getRegisteredBy(); ?></td>
+          <td>
+            <?php
+              echo $pet->getRegisteredBy() ? ($pet->getRegisteredBy() == $loggedUser->username ? "@".$loggedUser->username." (Você)" : $pet->getRegisteredBy()) : "";
+            ?>
+          </td>
         </tr>
       <?php
       endforeach;
@@ -53,7 +59,7 @@
   <?php
   } else {
   ?>
-    <p>Você não adotou nem um pet. Se puder, ajude a causa!</p>
+    <p>Você não adotou nenhum pet. Se puder, ajude a causa!</p>
   <?php
   }
   ?>

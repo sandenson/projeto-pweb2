@@ -48,7 +48,7 @@
             <option>Fêmea</option>
             <option>Macho</option>
           </select><br>
-          <label>Adicione imagens:</label><br>
+          <label>Adicione uma foto:</label><br>
           <div id="image-handler" class="images">
             <input type="file" name="picture" accept="image/*"/><br>
           </div>

@@ -15,9 +15,8 @@
       $loggedUser = $_SESSION["loggedUser"];
 
       $pets = Pet::findByRegisterer($loggedUser->username);
-      var_dump($pets);
 
-      // require_once "view/yourRegisteredPetsList/index.php";
+      require_once "view/yourRegisteredPetsList/index.php";
     }
 
     public static function indexYourAdoptions () {
@@ -59,7 +58,7 @@
     }
 
     public function update () {
-      if ($_POST["nName"] == "" && $_POST["nDesc"] == "") {
+      if ($_POST["nName"] == "" && $_POST["nDesc"] == "" && $_FILES["nPicture"]["name"] == "") {
         header("Location: ?class=Pet&action=indexYourRegistrations");
       }
 
@@ -68,16 +67,25 @@
       $name = $_POST["nName"] != "" ? $_POST["nName"] : $result->getName();
       $desc = $_POST["nDesc"] != "" ? $_POST["nDesc"] : $result->getDescription();
 
-      echo $name." ".$desc;
-
       $pet = new Pet($name, $desc, $result->getType(), $result->getSex(), $result->getRegisteredBy(), $result->getIsAdopted());
       $pet->update($_POST["petId"]);
+
+      if ($_FILES["nPicture"]["name"] != "") {
+        $imgName = date("mdYHis").".".pathinfo($_FILES["nPicture"]["name"])["extension"];
+
+        $petImg = new PetImg($_POST["petId"], $imgName);
+        $petImg->update();
+
+        move_uploaded_file($_FILES["nPicture"]["tmp_name"], "uploads/img/".$imgName);
+      }
 
       header("Location: ?class=Pet&action=indexYourRegistrations");
     }
 
     public static function delete () {
       $petId = $_POST["petId"];
+
+      echo $petId;
 
       Pet::delete($petId);
 

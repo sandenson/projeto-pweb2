@@ -1,5 +1,6 @@
 <?php
   require_once "database/database.php";
+  require_once "model/PetImg.php";
 
   class Pet {
     private $id;
@@ -90,7 +91,7 @@
 
       if ($filter == "Todos") {
         try {
-          $query = $conn->prepare("SELECT * FROM `pets`");
+          $query = $conn->prepare("SELECT `pets`.`id`, `pets`.`name`, `pets`.`description`, `pets`.`type`, `pets`.`sex`, `pets`.`isAdopted`, `pets`.`adoptedBy`, `pets`.`registeredBy`, `pets_imgs`.`name` AS 'image' FROM `pets` LEFT JOIN `pets_imgs` ON `pets_imgs`.`petId` = `pets`.`id`");
           $query->execute();
 
           $result = $query->fetchAll();
@@ -100,6 +101,7 @@
           forEach($result as $resPet) {
             $pet = new Pet($resPet["name"], $resPet["description"], $resPet["type"], $resPet["sex"], $resPet["registeredBy"], $resPet["isAdopted"]);
             $pet->setId($resPet["id"]);
+            $pet->image = $resPet["image"];
 
             if ($resPet["isAdopted"]) {
               $pet->setAdoptedBy($resPet["adoptedBy"]);
@@ -116,7 +118,7 @@
 
       else if ($filter == "Adotados") {
         try {
-          $query = $conn->prepare("SELECT * FROM `pets` WHERE `isAdopted` = TRUE");
+          $query = $conn->prepare("SELECT `pets`.`id`, `pets`.`name`, `pets`.`description`, `pets`.`type`, `pets`.`sex`, `pets`.`isAdopted`, `pets`.`adoptedBy`, `pets`.`registeredBy`, `pets_imgs`.`name` AS 'image' FROM `pets` LEFT JOIN `pets_imgs` ON `pets_imgs`.`petId` = `pets`.`id` WHERE `pets`.`isAdopted` = TRUE");
           $query->execute();
 
           $result = $query->fetchAll();
@@ -127,6 +129,7 @@
             $pet = new Pet($resPet["name"], $resPet["description"], $resPet["type"], $resPet["sex"], $resPet["registeredBy"], $resPet["isAdopted"]);
             $pet->setId($resPet["id"]);
             $pet->setAdoptedBy($resPet["adoptedBy"]);
+            $pet->image = $resPet["image"];
 
             array_push($pets, $pet);
           }
@@ -139,7 +142,7 @@
 
       else if ($filter == "Esperando por adoção") {
         try {
-          $query = $conn->prepare("SELECT * FROM `pets` WHERE `isAdopted` = FALSE");
+          $query = $conn->prepare("SELECT `pets`.`id`, `pets`.`name`, `pets`.`description`, `pets`.`type`, `pets`.`sex`, `pets`.`isAdopted`, `pets`.`adoptedBy`, `pets`.`registeredBy`, `pets_imgs`.`name` AS 'image' FROM `pets` LEFT JOIN `pets_imgs` ON `pets_imgs`.`petId` = `pets`.`id` WHERE `pets`.`isAdopted` = FALSE");
           $query->execute();
 
           $result = $query->fetchAll();
@@ -149,6 +152,7 @@
           forEach($result as $resPet) {
             $pet = new Pet($resPet["name"], $resPet["description"], $resPet["type"], $resPet["sex"], $resPet["registeredBy"], $resPet["isAdopted"], $resPet["adoptedBy"]);
             $pet->setId($resPet["id"]);
+            $pet->image = $resPet["image"];
 
             array_push($pets, $pet);
           }
@@ -185,8 +189,6 @@
 
         $result = $query->fetchAll();
 
-        var_dump($result);
-
         $pets = array();
 
         forEach($result as $resPet) {
@@ -211,7 +213,7 @@
       $conn = DbConnection::getConnection();
 
       try {
-        $query = $conn->prepare("SELECT * FROM `pets` WHERE `adoptedBy` = ?");
+        $query = $conn->prepare("SELECT `pets`.`id`, `pets`.`name`, `pets`.`description`, `pets`.`type`, `pets`.`sex`, `pets`.`isAdopted`, `pets`.`adoptedBy`, `pets`.`adoptedBy`, `pets_imgs`.`name` AS 'image' FROM `pets` LEFT JOIN `pets_imgs` ON `pets_imgs`.`petId` = `pets`.`id` WHERE `pets`.`adoptedBy` = 'sandenson'");
         $query->execute([$username]);
 
         $result = $query->fetchAll();
@@ -219,9 +221,13 @@
         $pets = array();
 
         forEach($result as $resPet) {
-          $pet = new Pet($resPet["name"], $resPet["description"], $resPet["type"], $resPet["sex"], $resPet["registeredBy"], $resPet["isAdopted"]);
+          $pet = new Pet($resPet["name"], $resPet["description"], $resPet["type"], $resPet["sex"], $resPet["adoptedBy"], $resPet["isAdopted"]);
           $pet->setId($resPet["id"]);
-          $pet->setAdoptedBy($resPet["adoptedBy"]);
+          $pet->image = $resPet["image"];
+
+          if ($resPet["isAdopted"]) {
+            $pet->setAdoptedBy($resPet["adoptedBy"]);
+          }
 
           array_push($pets, $pet);
         }
@@ -281,6 +287,8 @@
       $conn = DbConnection::getConnection();
 
       try {
+        PetImg::delete($petId);
+
         $query = $conn->prepare("DELETE FROM `pets` WHERE `id` = ?");
         $query->execute([$petId]);
       } catch (PDOException $e) {
