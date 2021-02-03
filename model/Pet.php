@@ -241,6 +241,19 @@
           $this->sex,
           $this->registeredBy
         ]);
+
+        $query2 = $conn->prepare("SELECT `id` FROM `pets` WHERE `name` = ? AND `description` = ? AND `type` = ? AND `sex` = ? AND `registeredBy` = ?");
+        $query2->execute([
+          $this->name,
+          $this->description,
+          $this->type,
+          $this->sex,
+          $this->registeredBy
+        ]);
+
+        $result = $query2->fetch();
+        
+        return $result["id"];
       } catch (PDOException $e) {
         return null;
       }

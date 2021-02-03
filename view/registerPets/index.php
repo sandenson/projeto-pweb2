@@ -50,7 +50,7 @@
           </select><br>
           <label>Adicione imagens:</label><br>
           <div id="image-handler" class="images">
-            <input type="file" name="pictures" accept="image/*"/><br>
+            <input type="file" name="picture" accept="image/*"/><br>
           </div>
           <input class="button_cad" type="submit" name="ok">
         </form>

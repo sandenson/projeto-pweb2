@@ -1,5 +1,6 @@
 <?php
   require_once "model/Pet.php";
+  require_once "model/PetImg.php";
 
   class PetController {
     public static function index () {
@@ -42,7 +43,18 @@
       $registedBy = $loggedUser->username;
 
       $pet = new Pet($name, $description, $type, $sex, $registedBy, false);
-      $pet->create();
+      $petId = $pet->create();
+
+      if (isset($_FILES["picture"])) {
+        $imgName = date("mdYHis").".".pathinfo($_FILES["picture"]["name"])["extension"];
+
+        $petImg = new PetImg($petId, $imgName);
+        $petImg->create();
+        
+        move_uploaded_file($_FILES["picture"]["tmp_name"], "uploads/img/".$imgName);
+      }
+
+      echo $petId;
 
       header("Location: ./");
     }
