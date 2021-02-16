@@ -1,7 +1,7 @@
 <?php
-  if(!isset($_SESSION["loggedUser"])) {
-    header('Location: ../../');
-  }
+if (!isset($_SESSION["loggedUser"])) {
+  header('Location: ../../');
+}
 ?>
 
 <html lang="pt-BR">
@@ -52,25 +52,32 @@
         <th>Status</th>
         <th>Adotado por</th>
         <th>Registrado por</th>
+        <th></th>
       </tr>
       <?php
       foreach ($pets as $index => $pet) :
       ?>
         <tr>
-          <td><?php echo $pet->image ? "<img src='uploads/img/".$pet->image."'alt='foto_do_pet'>" : ""; ?></td>
+          <td><?php echo $pet->image ? "<img height='300' src='uploads/img/" . $pet->image . "'alt='foto_do_pet'>" : ""; ?></td>
           <td><?php echo $pet->getName(); ?></td>
           <td><?php echo $pet->getType(); ?></td>
           <td><?php echo $pet->getSex(); ?></td>
           <td><?php echo $pet->getIsAdopted() ? "Adotado" : "Esperando por adoção"; ?></td>
           <td>
             <?php
-              echo $pet->getAdoptedBy() ? ($pet->getAdoptedBy() == $loggedUser->username ? "@".$loggedUser->username." (Você)" : "@".$pet->getAdoptedBy()) : "";
+            echo $pet->getAdoptedBy() ? ($pet->getAdoptedBy() == $loggedUser->username ? "@" . $loggedUser->username . " (Você)" : "@" . $pet->getAdoptedBy()) : "";
             ?>
           </td>
           <td>
             <?php
-              echo $pet->getRegisteredBy() ? ($pet->getRegisteredBy() == $loggedUser->username ? "@".$loggedUser->username." (Você)" : "@".$pet->getRegisteredBy()) : "";
-              ?>
+            echo $pet->getRegisteredBy() ? ($pet->getRegisteredBy() == $loggedUser->username ? "@" . $loggedUser->username . " (Você)" : "@" . $pet->getRegisteredBy()) : "";
+            ?>
+          </td>
+          <td>
+            <form action="?class=Pet&action=petProfile" method="post">
+              <input type="hidden" name="petId" value="<?php echo $pet->getId(); ?>">
+              <button type="submit">Página do pet</button>
+            </form>
           </td>
         </tr>
       <?php
@@ -81,13 +88,9 @@
   } else {
     if (!isset($_POST["filter"]) || $_POST["filter"] == "Todos") {
       echo "<p>Não há nenhum pet registrado no momento.</p>";
-    }
-
-    else if ($_POST["filter"] == "Esperando por adoção") {
+    } else if ($_POST["filter"] == "Esperando por adoção") {
       echo "<p>Não há nenhum pet registrado esperando por adoção no momento.</p>";
-    }
-
-    else {
+    } else {
       echo "<p>Não há nenhum pet registrado adotado no momento.</p>";
     }
   }

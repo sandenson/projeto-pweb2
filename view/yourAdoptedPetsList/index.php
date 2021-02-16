@@ -37,19 +37,26 @@
         <th>Espécie</th>
         <th>Sexo</th>
         <th>Registrado por</th>
+        <th></th>
       </tr>
       <?php
       foreach ($pets as $index => $pet) :
       ?>
         <tr>
-          <td><?php echo $pet->image ? "<img src='uploads/img/".$pet->image."'alt='foto_do_pet'>" : ""; ?></td>
+          <td><?php echo $pet->image ? "<img height='300' src='uploads/img/".$pet->image."'alt='foto_do_pet'>" : ""; ?></td>
           <td><?php echo $pet->getName(); ?></td>
           <td><?php echo $pet->getType(); ?></td>
           <td><?php echo $pet->getSex(); ?></td>
           <td>
             <?php
-              echo $pet->getRegisteredBy() ? ($pet->getRegisteredBy() == $loggedUser->username ? "@".$loggedUser->username." (Você)" : $pet->getRegisteredBy()) : "";
+              echo $pet->getRegisteredBy() ? ($pet->getRegisteredBy() == $loggedUser->username ? "@".$loggedUser->username." (Você)" : "@".$pet->getRegisteredBy()) : "";
             ?>
+          </td>
+          <td>
+            <form action="?class=Pet&action=petProfile" method="post">
+              <input type="hidden" name="petId" value="<?php echo $pet->getId(); ?>">
+              <button type="submit">Página do pet</button>
+            </form>
           </td>
         </tr>
       <?php

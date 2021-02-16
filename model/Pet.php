@@ -11,6 +11,7 @@
     private $registeredBy;
     private $isAdopted;
     private $adoptedBy;
+    private $adoptionLocation;
 
     public function __construct($name, $description, $type, $sex, $registeredBy, $isAdopted){
       $this->name = $name;
@@ -83,6 +84,14 @@
 
     public function getAdoptedBy(){
       return $this->adoptedBy;
+    }
+
+    public function setAdoptionLocation($adoptionLocation){
+      $this->adoptionLocation = $adoptionLocation;
+    }
+
+    public function getAdoptionLocation(){
+      return $this->adoptionLocation;
     }
 
     public static function findAll($filter) {
@@ -168,11 +177,15 @@
       $conn = DbConnection::getConnection();
 
       try {
-        $query = $conn->prepare("SELECT * FROM `pets` WHERE `id` = ?");
+        $query = $conn->prepare("SELECT `pets`.`id`, `pets`.`name`, `pets`.`description`, `pets`.`type`, `pets`.`sex`, `pets`.`isAdopted`, `pets`.`adoptedBy`, `pets`.`registeredBy`, `pets`.`adoptionLocation`, `pets_imgs`.`name` AS 'image' FROM `pets` LEFT JOIN `pets_imgs` ON `pets_imgs`.`petId` = `pets`.`id` WHERE `pets`.`id` = ?");
         $query->execute([$id]);
         $result = $query->fetch();
 
         $pet = new Pet($result["name"], $result["description"], $result["type"], $result["sex"], $result["registeredBy"], $result["isAdopted"]);
+        $pet->setId($id);
+        $pet->setAdoptionLocation($result["adoptionLocation"]);
+        $pet->setAdoptedby($result["adoptedBy"]);
+        $pet->image = $result["image"];
 
         return isset($pet) ? $pet : null;
       } catch (\PDOException $e) {
@@ -184,7 +197,7 @@
       $conn = DbConnection::getConnection();
 
       try {
-        $query = $conn->prepare("SELECT `pets`.`id`, `pets`.`name`, `pets`.`description`, `pets`.`type`, `pets`.`sex`, `pets`.`isAdopted`, `pets`.`adoptedBy`, `pets`.`registeredBy`, `pets_imgs`.`name` AS 'image' FROM `pets` LEFT JOIN `pets_imgs` ON `pets_imgs`.`petId` = `pets`.`id` WHERE `pets`.`registeredBy` = 'sandenson'");
+        $query = $conn->prepare("SELECT `pets`.`id`, `pets`.`name`, `pets`.`description`, `pets`.`type`, `pets`.`sex`, `pets`.`isAdopted`, `pets`.`adoptedBy`, `pets`.`registeredBy`, `pets_imgs`.`name` AS 'image' FROM `pets` LEFT JOIN `pets_imgs` ON `pets_imgs`.`petId` = `pets`.`id` WHERE `pets`.`registeredBy` = '?'");
         $query->execute([$username]);
 
         $result = $query->fetchAll();
@@ -213,7 +226,7 @@
       $conn = DbConnection::getConnection();
 
       try {
-        $query = $conn->prepare("SELECT `pets`.`id`, `pets`.`name`, `pets`.`description`, `pets`.`type`, `pets`.`sex`, `pets`.`isAdopted`, `pets`.`adoptedBy`, `pets`.`adoptedBy`, `pets_imgs`.`name` AS 'image' FROM `pets` LEFT JOIN `pets_imgs` ON `pets_imgs`.`petId` = `pets`.`id` WHERE `pets`.`adoptedBy` = 'sandenson'");
+        $query = $conn->prepare("SELECT `pets`.`id`, `pets`.`name`, `pets`.`description`, `pets`.`type`, `pets`.`sex`, `pets`.`isAdopted`, `pets`.`adoptedBy`, `pets`.`adoptedBy`, `pets_imgs`.`name` AS 'image' FROM `pets` LEFT JOIN `pets_imgs` ON `pets_imgs`.`petId` = `pets`.`id` WHERE `pets`.`adoptedBy` = ?");
         $query->execute([$username]);
 
         $result = $query->fetchAll();
@@ -242,22 +255,24 @@
       $conn = DbConnection::getConnection();
 
       try {
-        $query = $conn->prepare("INSERT INTO `pets` (`name`, `description`, `type`, `sex`, `registeredBy`) VALUES (?,?,?,?,?)");
+        $query = $conn->prepare("INSERT INTO `pets` (`name`, `description`, `type`, `sex`, `registeredBy` , `adoptionLocation`) VALUES (?,?,?,?,?,?)");
         $query->execute([
           $this->name,
           $this->description,
           $this->type,
           $this->sex,
-          $this->registeredBy
+          $this->registeredBy,
+          $this->adoptionLocation
         ]);
 
-        $query2 = $conn->prepare("SELECT `id` FROM `pets` WHERE `name` = ? AND `description` = ? AND `type` = ? AND `sex` = ? AND `registeredBy` = ?");
+        $query2 = $conn->prepare("SELECT `id` FROM `pets` WHERE `name` = ? AND `description` = ? AND `type` = ? AND `sex` = ? AND `registeredBy` = ? AND `adoptionLocation` = ?");
         $query2->execute([
           $this->name,
           $this->description,
           $this->type,
           $this->sex,
-          $this->registeredBy
+          $this->registeredBy,
+          $this->adoptionLocation
         ]);
 
         $result = $query2->fetch();
@@ -272,10 +287,11 @@
       $conn = DbConnection::getConnection();
 
       try {
-        $query = $conn->prepare("UPDATE `pets` SET `name` = ?, `description` = ? WHERE `id` = ?");
+        $query = $conn->prepare("UPDATE `pets` SET `name` = ? , `description` = ? , `adoptionLocation` = ? WHERE `id` = ?");
         $query->execute([
           $this->name,
           $this->description,
+          $this->adoptionLocation,
           $id
         ]);
       } catch (\PDOException $e) {

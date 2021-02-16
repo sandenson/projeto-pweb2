@@ -20,7 +20,7 @@ if (!isset($_SESSION["loggedUser"])) {
   <div id="header">
     <h1><?php
       $user = $_SESSION["loggedUser"];
-      echo "Olá, ".$user->username."!";
+      echo "Olá, ".$user->name."!";
     ?></h1>
     <div class="header">
       <form action="?class=User&action=profile" method="POST">

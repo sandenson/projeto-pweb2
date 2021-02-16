@@ -33,6 +33,12 @@
       require_once "view/adopt/index.php";
     }
 
+    public static function petProfile () {
+      $pet = Pet::findByPk($_POST["petId"]);
+
+      require_once "view/petProfile/index.php";
+    }
+
     public static function store () {
       $loggedUser = $_SESSION["loggedUser"];
 
@@ -40,9 +46,11 @@
       $description = $_POST["description"];
       $type = $_POST["type"];
       $sex = $_POST["sex"];
+      $adoptionLocation = $_POST["adoptionLocation"];
       $registedBy = $loggedUser->username;
 
       $pet = new Pet($name, $description, $type, $sex, $registedBy, false);
+      $pet->setAdoptionLocation($adoptionLocation);
       $petId = $pet->create();
 
       if ($_FILES["picture"]["name"] != "") {
@@ -58,7 +66,7 @@
     }
 
     public function update () {
-      if ($_POST["nName"] == "" && $_POST["nDesc"] == "" && $_FILES["nPicture"]["name"] == "") {
+      if ($_POST["nName"] == "" && $_POST["nDesc"] == "" && $_POST["nAdoptionLocation"] == "" && $_FILES["nPicture"]["name"] == "") {
         header("Location: ?class=Pet&action=indexYourRegistrations");
       }
 
@@ -66,8 +74,10 @@
 
       $name = $_POST["nName"] != "" ? $_POST["nName"] : $result->getName();
       $desc = $_POST["nDesc"] != "" ? $_POST["nDesc"] : $result->getDescription();
+      $adoptionLocation = $_POST["nAdoptionLocation"] != "" ? $_POST["nAdoptionLocation"] : $result->getAdoptionLocation();
 
       $pet = new Pet($name, $desc, $result->getType(), $result->getSex(), $result->getRegisteredBy(), $result->getIsAdopted());
+      $pet->setAdoptionLocation($adoptionLocation);
       $pet->update($_POST["petId"]);
 
       if ($_FILES["nPicture"]["name"] != "") {

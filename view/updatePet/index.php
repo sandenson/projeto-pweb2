@@ -34,6 +34,7 @@
   <form action="?class=Pet&action=update" method="POST" enctype="multipart/form-data">
     <label>Nome: </label><input type="text" name="nName" placeholder="Novo nome"><br>
     <label>Descrição: </label><input type="text" name="nDesc" placeholder="Nova descrição"><br>
+    <label>Local de adoção: </label><input type="text" name="nAdoptionLocation" placeholder="Novo local de adoção"><br>
     <label>Foto: </label><br>
     <div id="image-handler" class="images">
       <input type="file" name="nPicture" accept="image/*"/><br>
