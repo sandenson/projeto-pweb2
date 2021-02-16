@@ -14,7 +14,7 @@
 
 <body>
   <div style="display:flex;align-items:center;justify-content:center;">
-    <form action="?class=Pet&action=indexYourRegistrations" method="POST">
+    <form action="./" method="POST">
       <button type="submit">
         Voltar
       </button>

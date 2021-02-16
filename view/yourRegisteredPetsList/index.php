@@ -48,7 +48,7 @@
       foreach ($pets as $index => $pet) :
       ?>
         <tr>
-          <td><?php echo $pet->image ? "<img src='uploads/img/".$pet->image."'alt='foto_do_pet'>" : ""; ?></td>
+          <td><?php echo $pet->image ? "<img height='300' src='uploads/img/".$pet->image."'alt='foto_do_pet'>" : ""; ?></td>
           <td><?php echo $pet->getName(); ?></td>
           <td><?php echo $pet->getType(); ?></td>
           <td><?php echo $pet->getSex(); ?></td>

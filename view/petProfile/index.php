@@ -67,6 +67,7 @@
   <?php
     if ($loggedUser->username == $pet->getRegisteredBy() && $pet->getIsAdopted() == false) {?>
       <form action="?view=updatePet" method="POST">
+        <input type="hidden" name="petId" value=<?php echo $pet->getId(); ?>>
         <button type="submit">
           Atualizar dados
         </button>
@@ -88,6 +89,8 @@
 
     else if ($loggedUser->username == $pet->getAdoptedBy()) {?>
       <form action="?view=updatePet" method="POST">
+        <input type="hidden" name="petId" value=<?php echo $pet->getId(); ?>>
+        <input type="hidden" name="petName" value=<?php echo $pet->getName(); ?>>
         <button type="submit">
           Atualizar dados
         </button>
@@ -103,6 +106,7 @@
     else if ($loggedUser->username != $pet->getRegisteredBy() && $pet->getIsAdopted() == false) {?>
       <form action="?class=Pet&action=adopt" method="POST">
         <input type="hidden" name="petId" value="<?php echo $pet->getId(); ?>" />
+        <input type="hidden" name="petName" value=<?php echo $pet->getName(); ?>>
         <button type="submit">
           Adotar
         </button>
