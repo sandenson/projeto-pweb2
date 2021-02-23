@@ -27,21 +27,28 @@ if (!isset($_SESSION["loggedUser"])) {
     </form>
   </div>
 
-  <form action="?class=Pet&action=index" method="POST">
+  <form action="?class=Pet&action=index" method="GET">
+  <input type="hidden" name="class" value="Pet">
+  <input type="hidden" name="action" value="index">
     Filtrar <select name="filter" id="filter">
-      <option>Todos</option>
-      <option>Adotados</option>
-      <option>Esperando por adoção</option>
+      <option value="1">Todos</option>
+      <option value="2">Adotados</option>
+      <option value="3">Esperando por adoção</option>
     </select>
     <button type="submit">Filtrar</button>
   </form>
 
-  <p>Categoria: <b><?php echo isset($_POST["filter"]) ? $_POST["filter"] : "Todos" ?></b></p>
+  <p>Categoria: <b><?php
+    if (isset($_GET["filter"]) && $_GET["filter"] == "1") echo "Todos";
+    else if (isset($_GET["filter"]) && $_GET["filter"] == "2") echo "Adotados";
+    else if (isset($_GET["filter"]) && $_GET["filter"] == "3") echo "Esperando por adoção";
+    else echo "Todos";
+  ?></b></p>
 
   <?php
   $loggedUser = $_SESSION["loggedUser"];
 
-  if ($pets) {
+  if ($pets[0]) {
   ?>
     <table>
       <tr>
@@ -55,7 +62,7 @@ if (!isset($_SESSION["loggedUser"])) {
         <th></th>
       </tr>
       <?php
-      foreach ($pets as $index => $pet) :
+      foreach ($pets[0] as $index => $pet) :
       ?>
         <tr>
           <td><?php echo $pet->image ? "<img height='300' src='uploads/img/" . $pet->image . "'alt='foto_do_pet'>" : ""; ?></td>
@@ -84,17 +91,69 @@ if (!isset($_SESSION["loggedUser"])) {
       endforeach;
       ?>
     </table>
+
   <?php
   } else {
-    if (!isset($_POST["filter"]) || $_POST["filter"] == "Todos") {
+    if (!isset($_GET["filter"]) || $_GET["filter"] == "1") {
       echo "<p>Não há nenhum pet registrado no momento.</p>";
-    } else if ($_POST["filter"] == "Esperando por adoção") {
+    } else if ($_GET["filter"] == "3") {
       echo "<p>Não há nenhum pet registrado esperando por adoção no momento.</p>";
     } else {
       echo "<p>Não há nenhum pet registrado adotado no momento.</p>";
     }
   }
   ?>
+
+  <br>
+
+  <div>
+    <?php
+      if ($pets[1]) {
+        if ($pets[1] == 1) { ?>
+          <p>Páginas: <b>1</b></p>
+        <?php } else {
+          $filter = isset($_GET["filter"]) ? "&filter=".$_GET["filter"] : "&filter=1" ?>
+          <p>Páginas: 
+            <?php for ($i = 1; $i < $pets[1]+1; $i++) {
+              if (isset($_GET["page"]) && $i != $_GET["page"]) {
+                if ($i == 1) { ?>
+                  <a href="<?php
+                    echo "?class=".$_GET["class"]."&action=".$_GET["action"].$filter."&page=".($i);
+                  ?>"><b><?php echo ($i) ?> </b></a>                  
+                <?php }
+                else { ?>
+                  <a href="<?php
+                      echo "?class=".$_GET["class"]."&action=".$_GET["action"].$filter."&page=".($i);
+                  ?>"><b><?php echo ($i) ?> </b></a> 
+                <?php }
+              }
+
+              else if (isset($_GET["page"]) && $i == $_GET["page"]) {
+                if ($i == 1) { ?>
+                  <b><?php echo ($i) ?> </b>                  
+                <?php }
+                else { ?>
+                  <b><?php echo ($i) ?> </b>
+                <?php }
+              }
+              
+              else if (!isset($_GET["page"])) {
+                if ($i == 1) { ?>
+                  <b><?php echo ($i) ?> </b>                  
+                <?php }
+                else { ?>
+                  <a href="<?php
+                      echo "?class=".$_GET["class"]."&action=".$_GET["action"].$filter."&page=".($i);
+                  ?>"><b><?php echo ($i) ?> </b></a>
+                <?php }
+              } ?>
+          </p>
+          <?php
+          }
+        }
+      }
+    ?>
+  </div>
 </body>
 
 </html>

@@ -94,13 +94,20 @@
       return $this->adoptionLocation;
     }
 
-    public static function findAll($filter) {
+    public static function findAll($filter, $page) {
       $conn = DbConnection::getConnection();
       $loggedUser = $_SESSION["loggedUser"];
 
-      if ($filter == "Todos") {
+      $offset = ($page - 1) * 20;
+
+      if ($filter == "1") {
         try {
-          $query = $conn->prepare("SELECT `pets`.`id`, `pets`.`name`, `pets`.`description`, `pets`.`type`, `pets`.`sex`, `pets`.`isAdopted`, `pets`.`adoptedBy`, `pets`.`registeredBy`, `pets_imgs`.`name` AS 'image' FROM `pets` LEFT JOIN `pets_imgs` ON `pets_imgs`.`petId` = `pets`.`id`");
+          $query = $conn->prepare("SELECT COUNT(`id`) AS `pages` FROM `pets`");
+          $query->execute();
+          $result = $query->fetch();
+          $pages = intval(ceil($result["pages"] / 20));
+
+          $query = $conn->prepare("SELECT `pets`.`id`, `pets`.`name`, `pets`.`description`, `pets`.`type`, `pets`.`sex`, `pets`.`isAdopted`, `pets`.`adoptedBy`, `pets`.`registeredBy`, `pets_imgs`.`name` AS 'image' FROM `pets` LEFT JOIN `pets_imgs` ON `pets_imgs`.`petId` = `pets`.`id` LIMIT 20 OFFSET ".$offset);
           $query->execute();
 
           $result = $query->fetchAll();
@@ -119,15 +126,20 @@
             array_push($pets, $pet);
           }
 
-          return isset($pets) ? $pets : null;
+          return isset($pets) ? [$pets, $pages] : null;
         } catch (\PDOException $e) {
           return null;
         }
       }
 
-      else if ($filter == "Adotados") {
+      else if ($filter == "2") {
         try {
-          $query = $conn->prepare("SELECT `pets`.`id`, `pets`.`name`, `pets`.`description`, `pets`.`type`, `pets`.`sex`, `pets`.`isAdopted`, `pets`.`adoptedBy`, `pets`.`registeredBy`, `pets_imgs`.`name` AS 'image' FROM `pets` LEFT JOIN `pets_imgs` ON `pets_imgs`.`petId` = `pets`.`id` WHERE `pets`.`isAdopted` = TRUE");
+          $query = $conn->prepare("SELECT COUNT(`id`) AS `pages` FROM `pets` WHERE `pets`.`isAdopted` = TRUE");
+          $query->execute();
+          $result = $query->fetch();
+          $pages = intval(ceil($result["pages"] / 20));
+
+          $query = $conn->prepare("SELECT `pets`.`id`, `pets`.`name`, `pets`.`description`, `pets`.`type`, `pets`.`sex`, `pets`.`isAdopted`, `pets`.`adoptedBy`, `pets`.`registeredBy`, `pets_imgs`.`name` AS 'image' FROM `pets` LEFT JOIN `pets_imgs` ON `pets_imgs`.`petId` = `pets`.`id` WHERE `pets`.`isAdopted` = TRUE LIMIT 20 OFFSET ".$offset);
           $query->execute();
 
           $result = $query->fetchAll();
@@ -143,15 +155,20 @@
             array_push($pets, $pet);
           }
 
-          return isset($pets) ? $pets : null;
+          return isset($pets) ? [$pets, $pages] : null;
         } catch (\PDOException $e) {
           return null;
         }
       }
 
-      else if ($filter == "Esperando por adoção") {
+      else if ($filter == "3") {
         try {
-          $query = $conn->prepare("SELECT `pets`.`id`, `pets`.`name`, `pets`.`description`, `pets`.`type`, `pets`.`sex`, `pets`.`isAdopted`, `pets`.`adoptedBy`, `pets`.`registeredBy`, `pets_imgs`.`name` AS 'image' FROM `pets` LEFT JOIN `pets_imgs` ON `pets_imgs`.`petId` = `pets`.`id` WHERE `pets`.`isAdopted` = FALSE");
+          $query = $conn->prepare("SELECT COUNT(`id`) AS `pages` FROM `pets` WHERE `pets`.`isAdopted` = FALSE");
+          $query->execute();
+          $result = $query->fetch();
+          $pages = intval(ceil($result["pages"] / 20));
+
+          $query = $conn->prepare("SELECT `pets`.`id`, `pets`.`name`, `pets`.`description`, `pets`.`type`, `pets`.`sex`, `pets`.`isAdopted`, `pets`.`adoptedBy`, `pets`.`registeredBy`, `pets_imgs`.`name` AS 'image' FROM `pets` LEFT JOIN `pets_imgs` ON `pets_imgs`.`petId` = `pets`.`id` WHERE `pets`.`isAdopted` = FALSE LIMIT 20 OFFSET ".$offset);
           $query->execute();
 
           $result = $query->fetchAll();
@@ -166,7 +183,7 @@
             array_push($pets, $pet);
           }
 
-          return isset($pets) ? $pets : null;
+          return isset($pets) ? [$pets, $pages] : null;
         } catch (\PDOException $e) {
           return null;
         }
@@ -193,11 +210,19 @@
       }
     }
 
-    public static function findByRegisterer($username) {
+    public static function findByRegisterer($username, $page) {
       $conn = DbConnection::getConnection();
 
+      $offset = ($page - 1) * 20;
+
       try {
-        $query = $conn->prepare("SELECT `pets`.`id`, `pets`.`name`, `pets`.`description`, `pets`.`type`, `pets`.`sex`, `pets`.`isAdopted`, `pets`.`adoptedBy`, `pets`.`registeredBy`, `pets_imgs`.`name` AS 'image' FROM `pets` LEFT JOIN `pets_imgs` ON `pets_imgs`.`petId` = `pets`.`id` WHERE `pets`.`registeredBy` = ?");
+        $query = $conn->prepare("SELECT COUNT(`id`) AS `pages` FROM `pets` WHERE `pets`.`isAdopted` = FALSE");
+        $query->execute();
+        $result = $query->fetch();
+        $pages = intval(ceil($result["pages"] / 20));
+
+          
+        $query = $conn->prepare("SELECT `pets`.`id`, `pets`.`name`, `pets`.`description`, `pets`.`type`, `pets`.`sex`, `pets`.`isAdopted`, `pets`.`adoptedBy`, `pets`.`registeredBy`, `pets_imgs`.`name` AS 'image' FROM `pets` LEFT JOIN `pets_imgs` ON `pets_imgs`.`petId` = `pets`.`id` WHERE `pets`.`registeredBy` = ? LIMIT 20 OFFSET ".$offset);
         $query->execute([$username]);
 
         $result = $query->fetchAll();
@@ -216,17 +241,23 @@
           array_push($pets, $pet);
         }
 
-        return isset($pets) ? $pets : null;
+        return isset($pets) ? [$pets, $pages] : null;
       } catch (\PDOException $e) {
         return null;
       }
     }
 
-    public static function findByAdopter($username) {
+    public static function findByAdopter($username, $page) {
       $conn = DbConnection::getConnection();
 
-      try {
-        $query = $conn->prepare("SELECT `pets`.`id`, `pets`.`name`, `pets`.`description`, `pets`.`type`, `pets`.`sex`, `pets`.`isAdopted`, `pets`.`adoptedBy`, `pets`.`adoptedBy`, `pets_imgs`.`name` AS 'image' FROM `pets` LEFT JOIN `pets_imgs` ON `pets_imgs`.`petId` = `pets`.`id` WHERE `pets`.`adoptedBy` = ?");
+      $offset = ($page - 1) * 20;
+
+      try {$query = $conn->prepare("SELECT COUNT(`id`) AS `pages` FROM `pets` WHERE `pets`.`isAdopted` = FALSE");
+        $query->execute();
+        $result = $query->fetch();
+        $pages = intval(ceil($result["pages"] / 20));
+
+        $query = $conn->prepare("SELECT `pets`.`id`, `pets`.`name`, `pets`.`description`, `pets`.`type`, `pets`.`sex`, `pets`.`isAdopted`, `pets`.`adoptedBy`, `pets`.`adoptedBy`, `pets_imgs`.`name` AS 'image' FROM `pets` LEFT JOIN `pets_imgs` ON `pets_imgs`.`petId` = `pets`.`id` WHERE `pets`.`adoptedBy` = ? LIMIT 20 OFFSET ".$offset);
         $query->execute([$username]);
 
         $result = $query->fetchAll();
@@ -245,7 +276,7 @@
           array_push($pets, $pet);
         }
 
-        return isset($pets) ? $pets : null;
+        return isset($pets) ? [$pets, $pages] : null;
       } catch (\PDOException $e) {
         return null;
       }

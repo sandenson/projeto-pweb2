@@ -4,31 +4,35 @@
 
   class PetController {
     public static function index () {
-      $filter = isset($_POST["filter"]) ? $_POST["filter"] : "Todos";
+      $filter = isset($_GET["filter"]) ? $_GET["filter"] : "1";
+      $page = isset($_GET["page"]) ? $_GET["page"] : 1;
 
-      $pets = Pet::findAll($filter);
+      $pets = Pet::findAll($filter, $page);
 
       require_once "view/petsList/index.php";
     }
 
     public static function indexYourRegistrations () {
       $loggedUser = $_SESSION["loggedUser"];
+      $page = isset($_GET["page"]) ? $_GET["page"] : 1;
 
-      $pets = Pet::findByRegisterer($loggedUser->username);
+      $pets = Pet::findByRegisterer($loggedUser->username, $page);
 
       require_once "view/yourRegisteredPetsList/index.php";
     }
 
     public static function indexYourAdoptions () {
       $loggedUser = $_SESSION["loggedUser"];
+      $page = isset($_GET["page"]) ? $_GET["page"] : 1;
 
-      $pets = Pet::findByAdopter($loggedUser->username);
+      $pets = Pet::findByAdopter($loggedUser->username, $page);
 
       require_once "view/yourAdoptedPetsList/index.php";
     }
 
     public static function indexNotAdopted () {
-      $pets = Pet::findAll("Esperando por adoção");
+      $page = isset($_GET["page"]) ? $_GET["page"] : 1;
+      $pets = Pet::findAll("3", $page);
 
       require_once "view/adopt/index.php";
     }

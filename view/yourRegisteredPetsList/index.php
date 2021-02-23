@@ -30,7 +30,7 @@
   <?php
   $loggedUser = $_SESSION["loggedUser"];
 
-  if ($pets) {
+  if ($pets[0]) {
   ?>
     <table>
       <tr>
@@ -45,7 +45,7 @@
         <th></th>
       </tr>
       <?php
-      foreach ($pets as $index => $pet) :
+      foreach ($pets[0] as $index => $pet) :
       ?>
         <tr>
           <td><?php echo $pet->image ? "<img height='300' src='uploads/img/".$pet->image."'alt='foto_do_pet'>" : ""; ?></td>
@@ -84,6 +84,55 @@
   <?php
   }
   ?>
+
+<div>
+    <?php
+      if ($pets[1]) {
+        if ($pets[1] == 1) { ?>
+          <p>Páginas: <b>1</b></p>
+        <?php } else {
+          $filter = isset($_GET["filter"]) ? "&filter=".$_GET["filter"] : "&filter=1" ?>
+          <p>Páginas: 
+            <?php for ($i = 1; $i < $pets[1]+1; $i++) {
+              if (isset($_GET["page"]) && $i != $_GET["page"]) {
+                if ($i == 1) { ?>
+                  <a href="<?php
+                    echo "?class=".$_GET["class"]."&action=".$_GET["action"].$filter."&page=".($i);
+                  ?>"><b><?php echo ($i) ?> </b></a>                  
+                <?php }
+                else { ?>
+                  <a href="<?php
+                      echo "?class=".$_GET["class"]."&action=".$_GET["action"].$filter."&page=".($i);
+                  ?>"><b><?php echo ($i) ?> </b></a> 
+                <?php }
+              }
+
+              else if (isset($_GET["page"]) && $i == $_GET["page"]) {
+                if ($i == 1) { ?>
+                  <b><?php echo ($i) ?> </b>                  
+                <?php }
+                else { ?>
+                  <b><?php echo ($i) ?> </b>
+                <?php }
+              }
+              
+              else if (!isset($_GET["page"])) {
+                if ($i == 1) { ?>
+                  <b><?php echo ($i) ?> </b>                  
+                <?php }
+                else { ?>
+                  <a href="<?php
+                      echo "?class=".$_GET["class"]."&action=".$_GET["action"].$filter."&page=".($i);
+                  ?>"><b><?php echo ($i) ?> </b></a>
+                <?php }
+              } ?>
+          </p>
+          <?php
+          }
+        }
+      }
+    ?>
+  </div>
 </body>
 
 </html>
