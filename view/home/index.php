@@ -84,6 +84,12 @@ if (!isset($_SESSION["loggedUser"])) {
           Adote um pet
         </button>
       </form>
+
+      <form action="?view=getReport" method="POST">
+        <button type="submit">
+          Solicitar relatório de adoções
+        </button>
+      </form>
     </div>
   </div>
 </body>

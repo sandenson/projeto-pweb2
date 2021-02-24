@@ -39,6 +39,7 @@ CREATE TABLE `pets` (
   `sex` varchar(100) NOT NULL,
   `isAdopted` tinyint(1) NOT NULL DEFAULT 0,
   `adoptedBy` varchar(100) DEFAULT NULL,
+  `adoptedAt` date DEFAULT NULL,
   `registeredBy` varchar(100) DEFAULT NULL,
   `adoptionLocation` varchar(256) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

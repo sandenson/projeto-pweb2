@@ -358,7 +358,35 @@
         return null;
       }
     }
-    
+
+    public static function dailyReport($date) {
+      $conn = DbConnection::getConnection();
+
+      try {
+        $query = $conn->prepare("SELECT `pets`.`id`, `pets`.`name`, `pets`.`description`, `pets`.`type`, `pets`.`sex`, `pets`.`isAdopted`, `pets`.`adoptedBy`, `pets`.`adoptedBy`, `pets_imgs`.`name` AS 'image' FROM `pets` LEFT JOIN `pets_imgs` ON `pets_imgs`.`petId` = `pets`.`id` WHERE `pets`.`adoptedAt` = ?");
+        $query->execute([$date]);
+        $result = $query->fetchAll();
+
+        $pets = array();
+
+        forEach($result as $resPet) {
+          $pet = new Pet($resPet["name"], $resPet["description"], $resPet["type"], $resPet["sex"], $resPet["adoptedBy"], $resPet["isAdopted"]);
+          $pet->setId($resPet["id"]);
+          $pet->image = $resPet["image"];
+
+          if ($resPet["isAdopted"]) {
+            $pet->setAdoptedBy($resPet["adoptedBy"]);
+          }
+
+          array_push($pets, $pet);
+        }
+
+        return isset($pets) ? [$pets, $date] : null;
+      } catch (PDOException $e) {
+        return null;
+      }
+    }
+
     public static function listByRanking() {
       $conn = DbConnection::getConnection();
       try{

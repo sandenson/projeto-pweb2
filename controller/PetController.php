@@ -118,6 +118,12 @@
       $pets = Pet::listByRanking();
       require_once("view/ranking/index.php");
     }
+
+    public static function report () {
+      $pets = Pet::dailyReport($_POST["reportDate"]);
+
+      // require_once("view/ranking/index.php");
+    }
   }
 
 ?>

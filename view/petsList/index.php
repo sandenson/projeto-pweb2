@@ -14,7 +14,7 @@ if (!isset($_SESSION["loggedUser"])) {
 
 <body>
   <div style="display:flex;align-items:center;justify-content:center;">
-    <form style="margin-right:10vw" action="./" method="POST">
+    <form style="margin-right:10vw" action="./">
       <button type="submit">
         Voltar
       </button>
