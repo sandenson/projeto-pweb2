@@ -111,7 +111,13 @@
 
       Pet::adopt($petId);
 
-      header("Location: ".$_POST["action"]);
+      header("Location: ./");
+    }
+
+    public static function ranking () {
+      $pets = Pet::listByRanking();
+      require_once("view/ranking/index.php");
     }
   }
+
 ?>

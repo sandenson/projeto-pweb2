@@ -73,6 +73,11 @@ if (!isset($_SESSION["loggedUser"])) {
           Veja todos os pets cadastrados
         </button>
       </form>
+      <form action="?class=Pet&action=ranking" method="POST">
+        <button type="submit">
+          Veja os pets mais adotados
+        </button>
+      </form>
 
       <form action="?class=Pet&action=indexNotAdopted" method="POST">
         <button type="submit">

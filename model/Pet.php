@@ -357,5 +357,23 @@
         return null;
       }
     }
+
+    public static function listByRanking() {
+      $conn = DbConnection::getConnection();
+      try{
+        $query = $conn->prepare("SELECT DISTINCT type FROM pets as p WHERE isAdopted = 1 ORDER BY (SELECT COUNT(id) AS npets FROM pets WHERE type = p.type) DESC LIMIT 5");
+        $query->execute();
+        $result = $query->fetchAll();
+
+        $pets = array();
+
+        forEach($result as $resPet) {
+          array_push($pets, $resPet["type"]);
+        }
+
+        return isset($pets) ? $pets : null;
+      } catch(PDOException $err){
+      return null;
+      }
+    }
   }
-?>

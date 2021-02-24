@@ -28,7 +28,7 @@
   </div>
 
   <?php
-  if ($pets) {
+  if ($pets[0]) {
   ?>
     <table>
       <tr>
@@ -40,7 +40,7 @@
         <th></th>
       </tr>
       <?php
-      foreach ($pets as $index => $pet) :
+      foreach ($pets[0] as $index => $pet) :
       ?>
         <tr>
           <td><?php echo $pet->image ? "<img height='300' src='uploads/img/".$pet->image."'alt='foto_do_pet'>" : ""; ?></td>
