@@ -13,7 +13,7 @@
         Voltar
       </button>
     </form>
-    <h1>Veja todos os pets registrados</h1>
+    <h1>Veja o ranking de pets mais adotados</h1>
     <form style="margin-left:30vw" action="?class=Session&action=delete" method="POST">
       <button type="submit">
         Sair
@@ -21,21 +21,28 @@
     </form>
   </div>
   
-  <ul id="list">
+  <table>
+    <tr>
+      <th></th>
+      <th></th>
+    </tr>
     <?php
-    if ($pets) {
-      foreach ($pets as $index => $pet) :
+    if ($pets[0]) {
+      for ($i = 0; $i < count($pets[0]); $i++) {
     ?>
-        <li style="list-style:none"><?php echo $pet ?></li>
+        <tr>
+          <td><?php echo $pets[0][$i].": " ?></td>
+          <td><?php echo $pets[1][$i] == 1 ? $pets[1][$i]." adoção" : $pets[1][$i]." adoções" ?></td>
+        </tr>
       <?php
-      endforeach;
+      }
     } else {
       ?>
       <p>Pets ainda não foram adotados</p>
     <?php
     }
     ?>
-  </ul>
+  </table>
 </body>
 
 </html>

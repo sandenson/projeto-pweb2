@@ -348,30 +348,33 @@
       $loggedUser = $_SESSION["loggedUser"];
 
       try {
-        $query = $conn->prepare("UPDATE `pets` SET `adoptedBy` = ?, `isAdopted` = TRUE WHERE `id` = ?");
+        $query = $conn->prepare("UPDATE `pets` SET `adoptedBy` = ?, `isAdopted` = TRUE, `adoptedAt` = ? WHERE `id` = ?");
         $query->execute([
           $loggedUser->username,
+          date('Y-m-d'),
           $petId
         ]);
       } catch (PDOException $e) {
         return null;
       }
     }
-
+    
     public static function listByRanking() {
       $conn = DbConnection::getConnection();
       try{
-        $query = $conn->prepare("SELECT DISTINCT type FROM pets as p WHERE isAdopted = 1 ORDER BY (SELECT COUNT(id) AS npets FROM pets WHERE type = p.type) DESC LIMIT 5");
+        $query = $conn->prepare("SELECT DISTINCT `type`, (SELECT COUNT(`id`) AS `npets` FROM `pets` AS `p2` WHERE `p2`.`isAdopted` = 1 AND `p2`.`type` = `p`.`type`) AS `count` FROM `pets` AS `p` WHERE `isAdopted` = 1 ORDER BY  `count` DESC");
         $query->execute();
         $result = $query->fetchAll();
 
-        $pets = array();
+        $types = array();
+        $counts = array();
 
-        forEach($result as $resPet) {
-          array_push($pets, $resPet["type"]);
+        forEach($result as $res) {
+          array_push($types, $res["type"]);
+          array_push($counts, $res["count"]);
         }
 
-        return isset($pets) ? $pets : null;
+        return isset($types) && isset($counts) ? [$types, $counts] : null;
       } catch(PDOException $err){
       return null;
       }
