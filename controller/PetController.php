@@ -93,7 +93,7 @@
         move_uploaded_file($_FILES["nPicture"]["tmp_name"], "uploads/img/".$imgName);
       }
 
-      header("Location: ?class=Pet&action=indexYourRegistrations");
+      header("Location: ./");
     }
 
     public static function delete () {
@@ -122,7 +122,8 @@
     public static function report () {
       $pets = Pet::dailyReport($_POST["reportDate"]);
 
-      // require_once("view/ranking/index.php");
+      require_once("mpdf.php");
+      // require_once("view/dailyReport/index.php");
     }
   }
 
