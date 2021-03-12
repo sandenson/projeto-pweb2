@@ -1,4 +1,4 @@
-<h2>Equipe: Leonardo Oliveira Farias, Lucas Lucio Teixeira de Oliveira, Luiz Gabriel Correia Sandes, Mateus Pereira Bazilio</h2>
+<h2>Equipe: <a href="https://github.com/LOFyz">Leonardo Oliveira Farias</a>, <a href="https://github.com/LucasLucioTO">Lucas Lucio Teixeira de Oliveira</a>, <a href="https://github.com/sandenson">Luiz Gabriel Correia Sandes</a>, <a href="https://github.com/SirBasius">Mateus Pereira Bazilio</a></h2>
 
 <p>Um trabalho escolar simples em PHP. Nada de mais para ver aqui.</p>
 
