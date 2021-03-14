@@ -77,13 +77,13 @@ INSERT INTO `pets` (`id`, `name`, `description`, `type`, `sex`, `isAdopted`, `ad
 (27, '27', '27', 'BONORO', 'Fêmea', 0, NULL, 'sandenson', '27'),
 (28, '28', '28', 'BONORO', 'Fêmea', 0, NULL, 'sandenson', '28'),
 (29, '29', '29', 'BONORO', 'Fêmea', 0, NULL, 'sandenson', '29'),
-(30, '30', '30', 'Pinto', 'Fêmea', 0, NULL, 'sandenson', '30'),
-(31, '31', '31', 'Pinto', 'Fêmea', 0, NULL, 'sandenson', '31'),
-(32, '32', '32', 'Pinto', 'Fêmea', 0, NULL, 'sandenson', '32'),
-(33, '33', '33', 'Pinto', 'Fêmea', 0, NULL, 'sandenson', '33'),
-(34, '34', '34', 'Pinto', 'Fêmea', 0, NULL, 'sandenson', '34'),
-(35, '35', '35', 'Pinto', 'Fêmea', 0, NULL, 'sandenson', '35'),
-(36, '36', '36', 'Pinto', 'Fêmea', 0, NULL, 'sandenson', '36'),
+(30, '30', '30', 'Ford Pinto', 'Fêmea', 0, NULL, 'sandenson', '30'),
+(31, '31', '31', 'Ford Pinto', 'Fêmea', 0, NULL, 'sandenson', '31'),
+(32, '32', '32', 'Ford Pinto', 'Fêmea', 0, NULL, 'sandenson', '32'),
+(33, '33', '33', 'Ford Pinto', 'Fêmea', 0, NULL, 'sandenson', '33'),
+(34, '34', '34', 'Ford Pinto', 'Fêmea', 0, NULL, 'sandenson', '34'),
+(35, '35', '35', 'Ford Pinto', 'Fêmea', 0, NULL, 'sandenson', '35'),
+(36, '36', '36', 'Ford Pinto', 'Fêmea', 0, NULL, 'sandenson', '36'),
 (37, '37', '37', 'ALIEN-X', 'Fêmea', 0, NULL, 'sandenson', '37'),
 (38, '38', '38', 'ALIEN-X', 'Fêmea', 0, NULL, 'sandenson', '38'),
 (39, '39', '39', 'ALIEN-X', 'Fêmea', 0, NULL, 'sandenson', '39'),
@@ -113,11 +113,12 @@ INSERT INTO `pets` (`id`, `name`, `description`, `type`, `sex`, `isAdopted`, `ad
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `pets_imgs`
+-- Estrutura da tabela `imgs`
 --
 
-CREATE TABLE `pets_imgs` (
-  `petId` int(11) NOT NULL,
+CREATE TABLE `imgs` (
+  `petId` int(11) DEFAULT NULL,
+  `userPk` varchar(100) DEFAULT NULL,
   `name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -166,10 +167,10 @@ ALTER TABLE `pets`
   ADD KEY `registeredBy` (`registeredBy`);
 
 --
--- Índices para tabela `pets_imgs`
+-- Índices para tabela `imgs`
 --
-ALTER TABLE `pets_imgs`
-  ADD PRIMARY KEY (`petId`);
+ALTER TABLE `imgs`
+  ADD PRIMARY KEY (`name`);
 
 --
 -- Índices para tabela `users`
@@ -202,8 +203,9 @@ ALTER TABLE `pets`
 --
 -- Limitadores para a tabela `pets_imgs`
 --
-ALTER TABLE `pets_imgs`
-  ADD CONSTRAINT `pets_imgs_ibfk_1` FOREIGN KEY (`petId`) REFERENCES `pets` (`id`);
+ALTER TABLE `imgs`
+  ADD CONSTRAINT `imgs_ibfk_1` FOREIGN KEY (`petId`) REFERENCES `pets` (`id`),
+  ADD CONSTRAINT `imgs_ibfk_2` FOREIGN KEY (`userPk`) REFERENCES `users` (`username`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

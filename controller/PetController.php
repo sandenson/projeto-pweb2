@@ -1,6 +1,6 @@
 <?php
   require_once "model/Pet.php";
-  require_once "model/PetImg.php";
+  require_once "model/Img.php";
 
   class PetController {
     public static function index () {
@@ -60,7 +60,7 @@
       if ($_FILES["picture"]["name"] != "") {
         $imgName = date("mdYHis").".".pathinfo($_FILES["picture"]["name"])["extension"];
 
-        $petImg = new PetImg($petId, $imgName);
+        $petImg = new Img($petId, null, $imgName);
         $petImg->create();
         
         move_uploaded_file($_FILES["picture"]["tmp_name"], "uploads/img/".$imgName);
@@ -87,7 +87,7 @@
       if ($_FILES["nPicture"]["name"] != "") {
         $imgName = date("mdYHis").".".pathinfo($_FILES["nPicture"]["name"])["extension"];
 
-        $petImg = new PetImg($_POST["petId"], $imgName);
+        $petImg = new Img($_POST["petId"], null, $imgName);
         $petImg->update();
 
         move_uploaded_file($_FILES["nPicture"]["tmp_name"], "uploads/img/".$imgName);

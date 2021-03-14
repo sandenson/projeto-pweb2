@@ -35,13 +35,17 @@
     echo "@".$loggedUser->username
   ?></p>
 
-  <form action="?class=User&action=update" method="POST">
+  <form action="?class=User&action=update" method="POST" enctype="multipart/form-data">
     <label>Email:</label><input type="email" name="nEmail" placeholder="Novo email"><br>
     <label>CPF:</label><input type="text" name="nCpf" placeholder="Novo CPF"><br>
     <label>Endereço:</label><input type="text" name="nAddress" placeholder="Novo endereço"><br>
     <label>Data de nascimento:<input type="date" name="nBirthday"><br>
     <label>Nova senha:</label><input type="password" name="nPassword" placeholder="Nova senha"><br>
     <label>Confirmar senha:</label><input type="password" name="confirmNPassword" placeholder="Confirmar senha"><br>
+    <label>Nova foto de perfil:</label>
+    <div id="image-handler" class="images">
+      <input type="file" name="nPicture" accept="image/*"/><br>
+    </div>
     <button type="submit">
       Atualizar dados
     </button>

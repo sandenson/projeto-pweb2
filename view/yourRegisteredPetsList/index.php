@@ -77,15 +77,8 @@
       endforeach;
       ?>
     </table>
-  <?php
-  } else {
-  ?>
-    <p>Você não tem nenhum pet registrado para adoção.</p>
-  <?php
-  }
-  ?>
 
-<div>
+    <div>
     <?php
       if ($pets[1]) {
         if ($pets[1] == 1) { ?>
@@ -133,6 +126,14 @@
       }
     ?>
   </div>
+  <?php
+  } else {
+  ?>
+    <p>Você não tem nenhum pet registrado para adoção.</p>
+  <?php
+  }
+  ?>
+
 </body>
 
 </html>

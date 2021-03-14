@@ -16,14 +16,23 @@
     <div class="conteudo_cad">
       <h1 class="title_user">sign up</h1>
       <div class="organizer_form">
-        <form action="?class=User&action=store" method="POST">
+        <form action="?class=User&action=store" method="POST" enctype="multipart/form-data">
+          <label>Nome:</label>
           <input type="text" name="name" placeholder="Nome" required><br>
+          <label>Data de nascimento:</label>
           <input type="date" name="birthday" placeholder="Data de nascimento" required><br>
+          <label>Email:</label>
           <input type="email" name="email" placeholder="Email" required><br>
+          <label>Nome de usuário:</label>
           <input type="text" name="username" placeholder="Nome de usuário" required><br>
+          <label>Endereço:</label>
           <input type="text" name="address" placeholder="Endereço" required><br>
+          <label>CPF:</label>
           <input type="text" name="cpf" placeholder="CPF" required><br>
+          <label>Senha:</label>
           <input type="password" name="password" placeholder="Senha" required><br>
+          <label>Adicione uma foto:</label><br>
+            <input type="file" name="picture" accept="image/*"/><br>
           <div class="a">
             <a href="?view=login">Já tem uma conta? Faça login!</a>
             <input type="submit" name="ok">

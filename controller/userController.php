@@ -33,11 +33,20 @@
         $_SESSION["sessionErrorMessage"] = "Erro de cadastro";
       }
 
+      if ($_FILES["picture"]["name"] != "") {
+        $imgName = date("mdYHis").".".pathinfo($_FILES["picture"]["name"])["extension"];
+
+        $petImg = new Img(null, $username, $imgName);
+        $petImg->create();
+        
+        move_uploaded_file($_FILES["picture"]["tmp_name"], "uploads/img/".$imgName);
+      }
+
       SessionController::storeNew($user->getUsername(), $user->getName());
     }
 
     public function update () {
-      if ($_POST["nAddress"] == "" && $_POST["nCpf"] == "" && $_POST["nEmail"] == "" && $_POST["nBirthday"] == "" && $_POST["nPassword"] == "" && $_POST["confirmNPassword"] == "") {
+      if ($_POST["nAddress"] == "" && $_POST["nCpf"] == "" && $_POST["nEmail"] == "" && $_POST["nBirthday"] == "" && $_POST["nPassword"] == "" && $_POST["confirmNPassword"] == "" && $_FILES["nPicture"]["name"] == "") {
         header("Location: ?class=User&action=profile");
       }
 
@@ -53,6 +62,15 @@
 
       $user = new User($result->getName(), $birthday, $email, $result->getUsername(), $address, $cpf, $password);
       $user->update();
+
+      if ($_FILES["nPicture"]["name"] != "") {
+        $imgName = date("mdYHis").".".pathinfo($_FILES["nPicture"]["name"])["extension"];
+
+        $petImg = new Img(null, $loggedUser->username, $imgName);
+        $petImg->update();
+
+        move_uploaded_file($_FILES["nPicture"]["tmp_name"], "uploads/img/".$imgName);
+      }
 
       header("Location: ?class=User&action=profile");
     }

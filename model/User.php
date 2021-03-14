@@ -1,5 +1,6 @@
 <?php
   require_once 'database/database.php';
+  require_once 'model/img.php';
   
   class User {
     private $name;
@@ -80,7 +81,7 @@
       $conn = DbConnection::getConnection();
 
       try {
-        $query = $conn->prepare("SELECT * FROM `users`");
+        $query = $conn->prepare("SELECT `users`.*, `imgs`.`name` AS 'image' FROM `users` LEFT JOIN `imgs` ON `imgs`.`userPk` = `users`.`username`");
         $query->execute();
         $result = $query->fetchAll();
 
@@ -88,6 +89,7 @@
 
         forEach($result as $resUser) {
           $user = new User($resUser["name"], $resUser["birthday"], $resUser["email"], $resUser["username"], $resUser["address"], $resUser["cpf"], $resUser["password"]);
+          $user->image = $resUser["image"];
 
           array_push($users, $user);
         }
@@ -103,7 +105,7 @@
       $loggedUser = $_SESSION["loggedUser"];
 
       try {
-        $query = $conn->prepare("SELECT * FROM `users` WHERE `username` != ?");
+        $query = $conn->prepare("SELECT `users`.*, `imgs`.`name` AS 'image' FROM `users` LEFT JOIN `imgs` ON `imgs`.`userPk` = `users`.`username` WHERE `username` != ?");
         $query->execute([$loggedUser->username]);
         $result = $query->fetchAll();
 
@@ -111,6 +113,7 @@
 
         forEach($result as $resUser) {
           $user = new User($resUser["name"], $resUser["birthday"], $resUser["email"], $resUser["username"], $resUser["address"], $resUser["cpf"], $resUser["password"]);
+          $user->image = $resUser["image"];
 
           array_push($users, $user);
         }
@@ -125,11 +128,12 @@
       $conn = DbConnection::getConnection();
 
       try {
-        $query = $conn->prepare("SELECT * FROM `users` WHERE `username` = ?");
+        $query = $conn->prepare("SELECT `users`.*, `imgs`.`name` AS 'image' FROM `users` LEFT JOIN `imgs` ON `imgs`.`userPk` = `users`.`username` WHERE `username` = ?");
         $query->execute([$username]);
         $result = $query->fetch();
 
         $user = new User($result["name"], $result["birthday"], $result["email"], $result["username"], $result["address"], $result["cpf"], $result["password"]);
+        $user->image = $result["image"];
 
         return isset($user) ? $user : null;
       } catch (\PDOException $e) {
@@ -179,6 +183,8 @@
       echo $username;
 
       try {
+        Img::delete($username);
+
         $query = $conn->prepare("DELETE FROM `users` WHERE `username` = ?");
         $query->execute([$username]);
       } catch (\PDOException $e) {

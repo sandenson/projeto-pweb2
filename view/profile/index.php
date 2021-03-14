@@ -36,6 +36,9 @@
   ?></p>
 
   <ul>
+    <li style="list-style: none"><?php
+      echo $user->image ? "<img height='300' src='uploads/img/" . $user->image . "'alt='foto_do_usuario'>" : "<img height='300' src='view/assets/Drip_Goku.jpg'alt='foto_do_usuario'>";
+    ?></li>
     <li style="list-style: none">Email: <?php echo $user->getEmail() ?></li>
     <li style="list-style: none">CPF: <?php echo $user->getCpf() ?></li>
     <li style="list-style: none">Endereço: <?php echo $user->getAddress() ?></li>

@@ -1,6 +1,6 @@
 <?php
   require_once "database/database.php";
-  require_once "model/PetImg.php";
+  require_once "model/Img.php";
 
   class Pet {
     private $id;
@@ -107,7 +107,7 @@
           $result = $query->fetch();
           $pages = intval(ceil($result["pages"] / 20));
 
-          $query = $conn->prepare("SELECT `pets`.`id`, `pets`.`name`, `pets`.`description`, `pets`.`type`, `pets`.`sex`, `pets`.`isAdopted`, `pets`.`adoptedBy`, `pets`.`registeredBy`, `pets_imgs`.`name` AS 'image' FROM `pets` LEFT JOIN `pets_imgs` ON `pets_imgs`.`petId` = `pets`.`id` LIMIT 20 OFFSET ".$offset);
+          $query = $conn->prepare("SELECT `pets`.`id`, `pets`.`name`, `pets`.`description`, `pets`.`type`, `pets`.`sex`, `pets`.`isAdopted`, `pets`.`adoptedBy`, `pets`.`registeredBy`, `imgs`.`name` AS 'image' FROM `pets` LEFT JOIN `imgs` ON `imgs`.`petId` = `pets`.`id` LIMIT 20 OFFSET ".$offset);
           $query->execute();
 
           $result = $query->fetchAll();
@@ -139,7 +139,7 @@
           $result = $query->fetch();
           $pages = intval(ceil($result["pages"] / 20));
 
-          $query = $conn->prepare("SELECT `pets`.`id`, `pets`.`name`, `pets`.`description`, `pets`.`type`, `pets`.`sex`, `pets`.`isAdopted`, `pets`.`adoptedBy`, `pets`.`registeredBy`, `pets_imgs`.`name` AS 'image' FROM `pets` LEFT JOIN `pets_imgs` ON `pets_imgs`.`petId` = `pets`.`id` WHERE `pets`.`isAdopted` = TRUE LIMIT 20 OFFSET ".$offset);
+          $query = $conn->prepare("SELECT `pets`.`id`, `pets`.`name`, `pets`.`description`, `pets`.`type`, `pets`.`sex`, `pets`.`isAdopted`, `pets`.`adoptedBy`, `pets`.`registeredBy`, `imgs`.`name` AS 'image' FROM `pets` LEFT JOIN `imgs` ON `imgs`.`petId` = `pets`.`id` WHERE `pets`.`isAdopted` = TRUE LIMIT 20 OFFSET ".$offset);
           $query->execute();
 
           $result = $query->fetchAll();
@@ -168,7 +168,7 @@
           $result = $query->fetch();
           $pages = intval(ceil($result["pages"] / 20));
 
-          $query = $conn->prepare("SELECT `pets`.`id`, `pets`.`name`, `pets`.`description`, `pets`.`type`, `pets`.`sex`, `pets`.`isAdopted`, `pets`.`adoptedBy`, `pets`.`registeredBy`, `pets_imgs`.`name` AS 'image' FROM `pets` LEFT JOIN `pets_imgs` ON `pets_imgs`.`petId` = `pets`.`id` WHERE `pets`.`isAdopted` = FALSE LIMIT 20 OFFSET ".$offset);
+          $query = $conn->prepare("SELECT `pets`.`id`, `pets`.`name`, `pets`.`description`, `pets`.`type`, `pets`.`sex`, `pets`.`isAdopted`, `pets`.`adoptedBy`, `pets`.`registeredBy`, `imgs`.`name` AS 'image' FROM `pets` LEFT JOIN `imgs` ON `imgs`.`petId` = `pets`.`id` WHERE `pets`.`isAdopted` = FALSE LIMIT 20 OFFSET ".$offset);
           $query->execute();
 
           $result = $query->fetchAll();
@@ -194,7 +194,7 @@
       $conn = DbConnection::getConnection();
 
       try {
-        $query = $conn->prepare("SELECT `pets`.`id`, `pets`.`name`, `pets`.`description`, `pets`.`type`, `pets`.`sex`, `pets`.`isAdopted`, `pets`.`adoptedBy`, `pets`.`registeredBy`, `pets`.`adoptionLocation`, `pets_imgs`.`name` AS 'image' FROM `pets` LEFT JOIN `pets_imgs` ON `pets_imgs`.`petId` = `pets`.`id` WHERE `pets`.`id` = ?");
+        $query = $conn->prepare("SELECT `pets`.`id`, `pets`.`name`, `pets`.`description`, `pets`.`type`, `pets`.`sex`, `pets`.`isAdopted`, `pets`.`adoptedBy`, `pets`.`registeredBy`, `pets`.`adoptionLocation`, `imgs`.`name` AS 'image' FROM `pets` LEFT JOIN `imgs` ON `imgs`.`petId` = `pets`.`id` WHERE `pets`.`id` = ?");
         $query->execute([$id]);
         $result = $query->fetch();
 
@@ -222,7 +222,7 @@
         $pages = intval(ceil($result["pages"] / 20));
 
           
-        $query = $conn->prepare("SELECT `pets`.`id`, `pets`.`name`, `pets`.`description`, `pets`.`type`, `pets`.`sex`, `pets`.`isAdopted`, `pets`.`adoptedBy`, `pets`.`registeredBy`, `pets_imgs`.`name` AS 'image' FROM `pets` LEFT JOIN `pets_imgs` ON `pets_imgs`.`petId` = `pets`.`id` WHERE `pets`.`registeredBy` = ? LIMIT 20 OFFSET ".$offset);
+        $query = $conn->prepare("SELECT `pets`.`id`, `pets`.`name`, `pets`.`description`, `pets`.`type`, `pets`.`sex`, `pets`.`isAdopted`, `pets`.`adoptedBy`, `pets`.`registeredBy`, `imgs`.`name` AS 'image' FROM `pets` LEFT JOIN `imgs` ON `imgs`.`petId` = `pets`.`id` WHERE `pets`.`registeredBy` = ? LIMIT 20 OFFSET ".$offset);
         $query->execute([$username]);
 
         $result = $query->fetchAll();
@@ -257,7 +257,7 @@
         $result = $query->fetch();
         $pages = intval(ceil($result["pages"] / 20));
 
-        $query = $conn->prepare("SELECT `pets`.`id`, `pets`.`name`, `pets`.`description`, `pets`.`type`, `pets`.`sex`, `pets`.`isAdopted`, `pets`.`adoptedBy`, `pets`.`adoptedBy`, `pets_imgs`.`name` AS 'image' FROM `pets` LEFT JOIN `pets_imgs` ON `pets_imgs`.`petId` = `pets`.`id` WHERE `pets`.`adoptedBy` = ? LIMIT 20 OFFSET ".$offset);
+        $query = $conn->prepare("SELECT `pets`.`id`, `pets`.`name`, `pets`.`description`, `pets`.`type`, `pets`.`sex`, `pets`.`isAdopted`, `pets`.`adoptedBy`, `pets`.`adoptedBy`, `imgs`.`name` AS 'image' FROM `pets` LEFT JOIN `imgs` ON `imgs`.`petId` = `pets`.`id` WHERE `pets`.`adoptedBy` = ? LIMIT 20 OFFSET ".$offset);
         $query->execute([$username]);
 
         $result = $query->fetchAll();
@@ -334,7 +334,7 @@
       $conn = DbConnection::getConnection();
 
       try {
-        PetImg::delete($petId);
+        Img::delete($petId);
 
         $query = $conn->prepare("DELETE FROM `pets` WHERE `id` = ?");
         $query->execute([$petId]);
@@ -363,7 +363,7 @@
       $conn = DbConnection::getConnection();
 
       try {
-        $query = $conn->prepare("SELECT `pets`.`id`, `pets`.`name`, `pets`.`description`, `pets`.`type`, `pets`.`sex`, `pets`.`isAdopted`, `pets`.`adoptedBy`, `pets`.`adoptedBy`, `pets_imgs`.`name` AS 'image' FROM `pets` LEFT JOIN `pets_imgs` ON `pets_imgs`.`petId` = `pets`.`id` WHERE `pets`.`adoptedAt` = ?");
+        $query = $conn->prepare("SELECT `pets`.`id`, `pets`.`name`, `pets`.`description`, `pets`.`type`, `pets`.`sex`, `pets`.`isAdopted`, `pets`.`adoptedBy`, `pets`.`adoptedBy`, `imgs`.`name` AS 'image' FROM `pets` LEFT JOIN `imgs` ON `imgs`.`petId` = `pets`.`id` WHERE `pets`.`adoptedAt` = ?");
         $query->execute([$date]);
         $result = $query->fetchAll();
 
