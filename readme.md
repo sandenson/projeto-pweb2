@@ -2,4 +2,4 @@
 
 <p>Um trabalho escolar simples em PHP. Nada de mais para ver aqui.</p>
 
-<p>Se você realmente quiser ver ele funcionando, você pode acessá-lo <a href="https://pweeb2.000webhostapp.com/">aqui</a> (atualmente desatualizado).</p>
+<p>Se você realmente quiser ver ele funcionando, você pode acessá-lo <a href="https://pweeb2.000webhostapp.com/">aqui</a> (as requisições ao UserController não funcionam, por algum motivo).</p>
