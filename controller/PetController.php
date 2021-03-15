@@ -1,6 +1,7 @@
 <?php
   require_once "model/Pet.php";
   require_once "model/Img.php";
+  require_once "utils/watermark.php";
 
   class PetController {
     public static function index () {
@@ -62,31 +63,8 @@
 
         $petImg = new Img($petId, null, $imgName);
         $petImg->create();
-        
-        switch ($_FILES["nPicture"]["type"]):
-          case 'image/jpeg';
-          case 'image/pjpeg';
-            $tmp = imagecreatefromjpeg($_FILES["nPicture"]["tmp_name"]);
-          break;
-          case 'image/gif';
-            $tmp = imagecreatefromgif($_FILES["nPicture"]["tmp_name"]);
-          break;
-          case 'image/png';
-          case 'image/x-png';
-            $tmp = imagecreatefrompng($_FILES["nPicture"]["tmp_name"]);
-          break;
-        endswitch;
-    
-        $drip = imagecreatefromjpeg("view/assets/Mini_Drip.jpg");
-        $watermx = imagesy($drip);
-        $watermy = imagesx($drip);
-    
-        $waterm_offx = imagesx($tmp) - $watermx - 6;
-        $waterm_offy = imagesy($tmp) - $watermy - 6;
-    
-        imagecopymerge($tmp, $drip, $waterm_offx, $waterm_offy, 0, 0, $watermx, $watermy, 100);
-    
-        imagejpeg($tmp, "uploads/img/".$imgName);
+
+        WM::getWatermarkedImage($imgName);
       }
 
       header("Location: ./");
@@ -113,30 +91,7 @@
         $petImg = new Img($_POST["petId"], null, $imgName);
         $petImg->update();
 
-        switch ($_FILES["nPicture"]["type"]):
-          case 'image/jpeg';
-          case 'image/pjpeg';
-            $tmp = imagecreatefromjpeg($_FILES["nPicture"]["tmp_name"]);
-          break;
-          case 'image/gif';
-            $tmp = imagecreatefromgif($_FILES["nPicture"]["tmp_name"]);
-          break;
-          case 'image/png';
-          case 'image/x-png';
-            $tmp = imagecreatefrompng($_FILES["nPicture"]["tmp_name"]);
-          break;
-        endswitch;
-    
-        $drip = imagecreatefromjpeg("view/assets/Mini_Drip.jpg");
-        $watermx = imagesy($drip);
-        $watermy = imagesx($drip);
-    
-        $waterm_offx = imagesx($tmp) - $watermx - 6;
-        $waterm_offy = imagesy($tmp) - $watermy - 6;
-    
-        imagecopymerge($tmp, $drip, $waterm_offx, $waterm_offy, 0, 0, $watermx, $watermy, 100);
-    
-        imagejpeg($tmp, "uploads/img/".$imgName);
+        WM::getWatermarkedImage($imgName);
       }
 
       header("Location: ./");
