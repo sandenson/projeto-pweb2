@@ -63,7 +63,30 @@
         $petImg = new Img($petId, null, $imgName);
         $petImg->create();
         
-        move_uploaded_file($_FILES["picture"]["tmp_name"], "uploads/img/".$imgName);
+        switch ($_FILES["nPicture"]["type"]):
+          case 'image/jpeg';
+          case 'image/pjpeg';
+            $tmp = imagecreatefromjpeg($_FILES["nPicture"]["tmp_name"]);
+          break;
+          case 'image/gif';
+            $tmp = imagecreatefromgif($_FILES["nPicture"]["tmp_name"]);
+          break;
+          case 'image/png';
+          case 'image/x-png';
+            $tmp = imagecreatefrompng($_FILES["nPicture"]["tmp_name"]);
+          break;
+        endswitch;
+    
+        $drip = imagecreatefromjpeg("view/assets/Mini_Drip.jpg");
+        $watermx = imagesy($drip);
+        $watermy = imagesx($drip);
+    
+        $waterm_offx = imagesx($tmp) - $watermx - 6;
+        $waterm_offy = imagesy($tmp) - $watermy - 6;
+    
+        imagecopymerge($tmp, $drip, $waterm_offx, $waterm_offy, 0, 0, $watermx, $watermy, 100);
+    
+        imagejpeg($tmp, "uploads/img/".$imgName);
       }
 
       header("Location: ./");
@@ -90,7 +113,30 @@
         $petImg = new Img($_POST["petId"], null, $imgName);
         $petImg->update();
 
-        move_uploaded_file($_FILES["nPicture"]["tmp_name"], "uploads/img/".$imgName);
+        switch ($_FILES["nPicture"]["type"]):
+          case 'image/jpeg';
+          case 'image/pjpeg';
+            $tmp = imagecreatefromjpeg($_FILES["nPicture"]["tmp_name"]);
+          break;
+          case 'image/gif';
+            $tmp = imagecreatefromgif($_FILES["nPicture"]["tmp_name"]);
+          break;
+          case 'image/png';
+          case 'image/x-png';
+            $tmp = imagecreatefrompng($_FILES["nPicture"]["tmp_name"]);
+          break;
+        endswitch;
+    
+        $drip = imagecreatefromjpeg("view/assets/Mini_Drip.jpg");
+        $watermx = imagesy($drip);
+        $watermy = imagesx($drip);
+    
+        $waterm_offx = imagesx($tmp) - $watermx - 6;
+        $waterm_offy = imagesy($tmp) - $watermy - 6;
+    
+        imagecopymerge($tmp, $drip, $waterm_offx, $waterm_offy, 0, 0, $watermx, $watermy, 100);
+    
+        imagejpeg($tmp, "uploads/img/".$imgName);
       }
 
       header("Location: ./");
